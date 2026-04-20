@@ -37,7 +37,7 @@ The program uses the assumption that changing between lines at stations takes ex
 - **[ ]** Allow the user to specify any station closures.
 - **[ ]** Allow the user to specify any delays.
 - **[ ]** Read in the walk times between stations.
-    * Could compare the time walking between current station and final station each run through of Dijkstra's to see if walking is a viable alternative route.
+    * Use the shortest time out of walking and tram line for each edge in Dijkstra's.
 - **[ ]** Generate a visual graph of the route.
     * Generate inside a swing GUI.
     * Create custom drawable station and line objects.
