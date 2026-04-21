@@ -10,7 +10,7 @@ public class Program {
 
     public Program() {
         
-        data_handler(new File("test_times.csv"));
+        data_handler(new File("Metrolink_times_linecolour.csv"));
 
     }
 
@@ -51,8 +51,8 @@ public class Program {
             System.err.println("File not found.");
         }
 
-        // graph.print_vertices();
-        graph.print_edges();
+        graph.print_vertices();
+        // graph.print_edges();
 
     }
 

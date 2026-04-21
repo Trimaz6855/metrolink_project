@@ -46,7 +46,7 @@ public class Graph {
                     }
                 }
             }
-            edges_new[edges.length][edges.length] = new Edge(-1, -1, 0, "Blank");
+            // edges_new[edges.length][edges.length] = new Edge(-1, -1, 0, "Blank");
         }
 
         int id_start_vertex = get_vertex_id_from_name(station_start);
@@ -94,7 +94,9 @@ public class Graph {
             for(int i = 0; i < vertices.length; i ++ ) {
                 System.out.println(vertices[i].get_vertex_name());
             }
-        }    
+        }
+        
+        System.out.println(vertices.length + " stations");
 
     }
 
@@ -113,6 +115,7 @@ public class Graph {
                 System.out.println(); 
             }
         }
+        System.out.println(edges.length + "x" + edges.length + " matrix");
 
     }
 
