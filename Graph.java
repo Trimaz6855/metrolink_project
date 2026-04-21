@@ -41,8 +41,12 @@ public class Graph {
             for(int i = 0; i < edges.length; i ++ ) {
                 for(int j = 0; j < edges.length; j ++ ) {
                     edges_new[i][j] = edges[i][j];
+                    if(i == j) {
+                        edges_new[i][j] = new Edge(-1, -1, 0, "Blank");
+                    }
                 }
             }
+            edges_new[edges.length][edges.length] = new Edge(-1, -1, 0, "Blank");
         }
 
         int id_start_vertex = get_vertex_id_from_name(station_start);
@@ -99,9 +103,14 @@ public class Graph {
         if(edges != null) {
             for(int i = 0; i < edges.length; i ++ ) {
                 for(int j = 0; j < edges.length; j ++ ) {
-                    System.out.print(edges[i][j].get_weight() + " ");
+                    if(edges[i][j] != null) {
+                        System.out.print(edges[i][j].get_weight() + " ");
+                    }
+                    else {
+                        System.out.print("- ");
+                    }
                 }
-                System.out.println();
+                System.out.println(); 
             }
         }
 
