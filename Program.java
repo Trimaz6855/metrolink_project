@@ -51,7 +51,8 @@ public class Program {
             System.err.println("File not found.");
         }
 
-        graph.print_vertices();
+        // graph.print_vertices();
+        graph.print_edges();
 
     }
 

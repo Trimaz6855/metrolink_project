@@ -2,10 +2,10 @@ public class Edge {
     
     private int vertex_start;
     private int vertex_end;
-    private int weight;
+    private double weight;
     private String line;
 
-    public Edge(int start, int end, int weight, String line) {
+    public Edge(int start, int end, double weight, String line) {
         this.vertex_start = start;
         this.vertex_end = end;
         this.weight = weight;
@@ -20,7 +20,7 @@ public class Edge {
         return vertex_end;
     }
 
-    public int get_weight() {
+    public double get_weight() {
         return weight;
     }
 
