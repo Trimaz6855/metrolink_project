@@ -16,7 +16,7 @@ public class Graph {
         next_vertex_id ++ ;
         Vertex[] vertices_new = new Vertex[next_vertex_id];
         if(vertices != null && vertices.length != 0) {
-            for(int i = 0; i < vertices_new.length - 1; i ++ ) {
+            for(int i = 0; i < vertices.length - 1; i ++ ) {
                 vertices_new[i] = vertices[i];
             }
         }
@@ -41,11 +41,11 @@ public class Graph {
         }
 
         if(find_vertex(station_end) == false) {
-            // System.out.println("Adding " + station_end + find_vertex(station_end));
+            System.out.println("Adding " + station_end + find_vertex(station_end));
             
             add_vertex(station_end);
             
-            // System.out.println(find_vertex(station_end));
+            System.out.println(find_vertex(station_end));
 
             // print_vertices();
         }
@@ -59,7 +59,9 @@ public class Graph {
         
         if(vertices != null) {
             // System.out.println(vertices.length);
+            System.out.println(vertices[0]);
             for(int i = 0; i < vertices.length; i ++ ) {
+                // System.out.println(vertices[i]);
                 if(vertices[i].get_vertex_name() == name) {
                     return true;
                 }
