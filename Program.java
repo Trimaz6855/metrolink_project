@@ -7,10 +7,12 @@ import java.util.regex.*;
 public class Program {
     
     private Graph graph = new Graph();
+    private String desired_start, desired_end;
 
     public Program() {
         
-        data_handler(new File("Metrolink_times_linecolour.csv"));
+        data_handler(new File("test_times.csv"));
+        get_user_input();
 
     }
 
@@ -52,8 +54,31 @@ public class Program {
         }
 
         graph.print_vertices();
-        // graph.print_edges();
+        graph.print_edges();
 
+    }
+
+    public void get_user_input() {
+        Boolean input_gathered = false;
+        Scanner input_scanner = new Scanner(System.in);
+        while(input_gathered == false) {
+            System.out.println("Enter Desired Start Station: ");
+            desired_start = input_scanner.nextLine();
+            if(graph.find_vertex(desired_start) == true) {
+               input_gathered = true;
+            }
+        }
+
+        input_gathered = false;
+        
+        while(input_gathered == false) {
+            System.out.println("Enter Desired End Station: ");
+            desired_end = input_scanner.nextLine();
+            if(graph.find_vertex(desired_end) == true) {
+                System.out.println("Valid start and end station");
+                input_gathered = true;
+            }
+        }
     }
 
     public static void main(String[] args) {

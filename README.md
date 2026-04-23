@@ -14,9 +14,10 @@ The program uses the assumption that changing between lines at stations takes ex
 ## Project Checklist
 
 ### Task 1
-- **[ ]** Read in station list and times between stations.
-- **[ ]** Create a graph using the stations and times between them.
+- **[ / ]** Read in station list and times between stations.
+- **[ / ]** Create a graph using the stations and times between them.
 - **[ ]** Create a GUI allowing the user to enter a valid start and end station with error checking.
+    * Will initially implement as a command-line UI then will implement graphically later.
 
 ### Task 2 
 - **[ ]** Output a valid, not necessarily shortest, route between the start and end station.

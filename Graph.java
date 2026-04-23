@@ -46,7 +46,6 @@ public class Graph {
                     }
                 }
             }
-            // edges_new[edges.length][edges.length] = new Edge(-1, -1, 0, "Blank");
         }
 
         int id_start_vertex = get_vertex_id_from_name(station_start);
