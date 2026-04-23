@@ -118,6 +118,33 @@ public class Graph {
 
     }
 
+    public Boolean find_edge(String start, String end) {
+        
+        int id_start = get_vertex_id_from_name(start);
+        int id_end = get_vertex_id_from_name(end);
+
+        if(edges[id_start][id_end] != null && edges[id_start][id_end].get_weight() > 0.0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    public Edge get_edge_from_stations(String start, String end) {
+        
+        int id_start = get_vertex_id_from_name(start);
+        int id_end = get_vertex_id_from_name(end);
+
+        return edges[id_start][id_end];
+        
+    }
+
+    public int get_station_count() {
+        return vertices.length;
+    }
+
     public int get_vertex_id_from_name(String name) {
         for(int i = 0; i < vertices.length; i ++ ) {
             if(vertices[i].get_vertex_name().equals(name)) {
@@ -127,4 +154,8 @@ public class Graph {
         return -1;
     }
 
-}
+    public String get_vertex_name_from_id(int id) {
+        return vertices[id].get_vertex_name();
+    }
+
+}   

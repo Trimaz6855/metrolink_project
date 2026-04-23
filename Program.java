@@ -13,6 +13,7 @@ public class Program {
         
         data_handler(new File("test_times.csv"));
         get_user_input();
+        Basic_Route route = new Basic_Route(graph, desired_start, desired_end);
 
     }
 
@@ -54,7 +55,7 @@ public class Program {
         }
 
         graph.print_vertices();
-        graph.print_edges();
+        // graph.print_edges();
 
     }
 
