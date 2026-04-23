@@ -54,14 +54,11 @@ public class Graph {
         switch (id_start_vertex) {
             case -1:
                 break;
-        
             default:
                 switch (id_end_vertex) {
                     case -1:
                         break;
-                
                     default:
-
                         if(edges_new[id_start_vertex][id_end_vertex] == null || edges_new[id_start_vertex][id_end_vertex].get_weight() > line_time) {
                             edges_new[id_start_vertex][id_end_vertex] = new Edge(id_start_vertex, id_end_vertex, line_time, line_colour);
                         }
@@ -87,6 +84,55 @@ public class Graph {
         return false;
     }
 
+    public int get_vertex_id_from_name(String name) {
+        for(int i = 0; i < vertices.length; i ++ ) {
+            if(vertices[i].get_vertex_name().equals(name)) {
+                return vertices[i].get_vertex_id();
+            }
+        }
+        return -1;
+    }
+
+    public String get_vertex_name_from_id(int id) {
+        try {
+            return vertices[id].get_vertex_name();
+        } catch (Exception e) {
+            System.err.println("Unable to retrieve a vertex at id: " + id);
+            return e.getMessage();
+        }
+    }
+
+    public Vertex get_vertex(String name) {
+        return vertices[get_vertex_id_from_name(name)];
+    }
+    
+    public Boolean find_edge(String start, String end) {
+        
+        int id_start = get_vertex_id_from_name(start);
+        int id_end = get_vertex_id_from_name(end);
+
+        if(edges[id_start][id_end] != null && edges[id_start][id_end].get_weight() > 0.0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    public Edge get_edge_from_stations(String start, String end) {
+        
+        int id_start = get_vertex_id_from_name(start);
+        int id_end = get_vertex_id_from_name(end);
+
+        return edges[id_start][id_end];
+        
+    }
+
+    public int get_station_count() {
+        return vertices.length;
+    }
+    
     public void print_vertices() {
 
         if(vertices != null) {
@@ -116,46 +162,6 @@ public class Graph {
         }
         System.out.println(edges.length + "x" + edges.length + " matrix");
 
-    }
-
-    public Boolean find_edge(String start, String end) {
-        
-        int id_start = get_vertex_id_from_name(start);
-        int id_end = get_vertex_id_from_name(end);
-
-        if(edges[id_start][id_end] != null && edges[id_start][id_end].get_weight() > 0.0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-
-    }
-
-    public Edge get_edge_from_stations(String start, String end) {
-        
-        int id_start = get_vertex_id_from_name(start);
-        int id_end = get_vertex_id_from_name(end);
-
-        return edges[id_start][id_end];
-        
-    }
-
-    public int get_station_count() {
-        return vertices.length;
-    }
-
-    public int get_vertex_id_from_name(String name) {
-        for(int i = 0; i < vertices.length; i ++ ) {
-            if(vertices[i].get_vertex_name().equals(name)) {
-                return vertices[i].get_vertex_id();
-            }
-        }
-        return -1;
-    }
-
-    public String get_vertex_name_from_id(int id) {
-        return vertices[id].get_vertex_name();
     }
 
 }   
