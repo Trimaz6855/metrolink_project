@@ -106,6 +106,10 @@ public class Graph {
         return vertices[get_vertex_id_from_name(name)];
     }
     
+    public Vertex get_vertex(int id) {
+        return vertices[id];
+    }
+
     public Boolean find_edge(String start, String end) {
         
         int id_start = get_vertex_id_from_name(start);
@@ -129,10 +133,114 @@ public class Graph {
         
     }
 
+    public String get_line_from_stations(int start, int end) {
+
+        return edges[start][end].get_line();
+
+    }
+
     public int get_station_count() {
         return vertices.length;
     }
     
+    public void dijkstras(String start, String end) {
+
+        Boolean[] vertices_visited = new Boolean[vertices.length];
+        for(int i = 0; i < vertices.length; i ++ ) {
+            vertices_visited[i] = false;
+        }
+
+        double[] shortest_distance_to_start = new double[vertices.length];
+        for(int i = 0; i < vertices.length; i ++ ) {
+            shortest_distance_to_start[i] = Double.POSITIVE_INFINITY;
+        }
+
+        int[] vertices_previous = new int[vertices.length];
+        for(int i = 0; i < vertices.length; i ++ ) {
+            vertices_previous[i] = -1;
+        }
+
+        Boolean visited_all = false;
+
+        int id_start = get_vertex_id_from_name(start);
+        int id_end = get_vertex_id_from_name(end);
+        int id_current = id_start;
+
+        vertices_visited[id_start] = true;
+        shortest_distance_to_start[id_start] = 0; 
+        
+        while(visited_all == false) {
+
+            for(int i = 0; i < vertices.length; i ++ ) {
+                if(edges[id_current][i] != null) {
+                    Edge edge_current = edges[id_current][i];
+
+                    if(vertices_visited[i] == false && shortest_distance_to_start[i] == Double.POSITIVE_INFINITY) {
+                        vertices_previous[i] = id_current;
+                        shortest_distance_to_start[i] = edge_current.get_weight();
+                    }
+                    else if(vertices_visited[i] == false && vertices_previous[i] != -1){
+                        int id_previous = vertices_previous[i];
+                        double weight_new = shortest_distance_to_start[id_previous] + edge_current.get_weight();
+                        if(weight_new < shortest_distance_to_start[i]) {
+                            shortest_distance_to_start[i] = weight_new;
+                            vertices_previous[i] = id_previous;
+                        }
+                    }
+                    
+                }
+
+            }
+            vertices_visited[id_current] = true;
+            
+            for(int i = 0; i < vertices_visited.length; i ++ ) {
+                if(vertices_visited[i] == true) {
+                    visited_all = true;
+                }
+                else if(vertices_visited[i] == false) {
+                    visited_all = false;
+                }
+            }
+
+            if(id_current == vertices.length - 1) {
+                id_current = 0;
+            }
+            else {
+                id_current ++;
+            }
+
+        }
+
+        int route[] = new int[1];
+        route[0] = id_end;
+
+        while(id_end != id_start){
+
+            int[] new_route = new int[route.length + 1];
+
+            for(int i = route.length; i >= 1; i -- ) {
+                new_route[i] = route[i-1];
+            }
+
+            if(id_end == 0) {
+                id_end = vertices.length - 1;
+            }
+            else {
+                id_end --;
+            }
+
+            new_route[0] = id_end;
+
+            route = new_route;
+        }
+    
+        for(int i = 1; i < route.length; i ++ ) {
+
+            System.out.println(get_vertex_name_from_id(route[i]) + " via " + get_line_from_stations(route[i-1], route[i]) + " line ");
+        }
+
+    }
+
     public void print_vertices() {
 
         if(vertices != null) {

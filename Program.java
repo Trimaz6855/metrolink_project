@@ -13,7 +13,7 @@ public class Program {
         
         data_handler(new File("test_times.csv"));
         get_user_input();
-        Basic_Route route = new Basic_Route(graph, desired_start, desired_end);
+        graph.dijkstras(desired_start, desired_end);
 
     }
 
@@ -49,14 +49,12 @@ public class Program {
                     }
                 }
             }
+            graph.print_vertices();
+            // graph.print_edges();
         }
         catch(FileNotFoundException e) {
             System.err.println("File not found.");
         }
-
-        graph.print_vertices();
-        // graph.print_edges();
-
     }
 
     public void get_user_input() {
