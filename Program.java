@@ -13,6 +13,7 @@ public class Program {
         
         data_handler(new File("Metrolink_times_linecolour.csv"));
         get_user_input();
+        graph.print_edges();
         graph.dijkstras(desired_start, desired_end);
 
     }

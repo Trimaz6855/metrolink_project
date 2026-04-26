@@ -41,9 +41,9 @@ public class Graph {
             for(int i = 0; i < edges.length; i ++ ) {
                 for(int j = 0; j < edges.length; j ++ ) {
                     edges_new[i][j] = edges[i][j];
-                    if(i == j) {
-                        edges_new[i][j] = new Edge(-1, -1, 0, "Blank");
-                    }
+                    // if(i == j) {
+                    //     edges_new[i][j] = new Edge(-1, -1, 0, "Blank");
+                    // }
                 }
             }
         }
@@ -214,6 +214,11 @@ public class Graph {
         int route[] = new int[1];
         route[0] = id_end;
 
+        for(int i = 0; i < vertices_previous.length; i ++ ) {
+            System.out.println("Previous vertex for vertex " + get_vertex_name_from_id(i) + " is " + vertices_previous[i] + ", ");
+        }
+        System.out.println();
+
         while(id_end != id_start){
 
             int[] new_route = new int[route.length + 1];
@@ -222,22 +227,38 @@ public class Graph {
                 new_route[i] = route[i-1];
             }
 
-            if(id_end == 0) {
-                id_end = vertices.length - 1;
+            if(id_end == -1) {
+                break;
             }
             else {
-                id_end --;
+                System.out.println(vertices_previous[id_end]);
+                id_end = vertices_previous[id_end];
             }
 
             new_route[0] = id_end;
 
             route = new_route;
         }
-    
-        for(int i = 1; i < route.length; i ++ ) {
+        
+        int counter_stations = 2;
 
-            System.out.println(get_vertex_name_from_id(route[i]) + " via " + get_line_from_stations(route[i-1], route[i]) + " line ");
+        for(int i = 0; i < route.length; i ++ ) {
+            System.out.print(route[i] + ", ");
         }
+        System.out.println();
+
+        while(counter_stations < route.length ) {
+
+            System.out.println("Getting Line at position edge[" + counter_stations + "-1][" + counter_stations + "]" );
+            System.out.println("Edge between stations: " +  vertices[route[counter_stations - 1]].get_vertex_name() + " and " + vertices[route[counter_stations]].get_vertex_name());
+
+            System.out.println(get_vertex_name_from_id(route[counter_stations]) + " via " + get_line_from_stations(route[counter_stations-1], route[counter_stations]) + " line ");
+
+            counter_stations ++;
+        }
+
+        System.out.println("Total Number of Stations: " + counter_stations);
+        System.out.println("Total Journey Time: " + shortest_distance_to_start[route[route.length-1]]);
 
     }
 
@@ -257,6 +278,7 @@ public class Graph {
 
         if(edges != null) {
             for(int i = 0; i < edges.length; i ++ ) {
+                System.out.print("[");
                 for(int j = 0; j < edges.length; j ++ ) {
                     if(edges[i][j] != null) {
                         System.out.print(edges[i][j].get_weight() + " ");
@@ -265,7 +287,7 @@ public class Graph {
                         System.out.print("- ");
                     }
                 }
-                System.out.println(); 
+                System.out.println("]"); 
             }
         }
         System.out.println(edges.length + "x" + edges.length + " matrix");
