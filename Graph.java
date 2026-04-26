@@ -25,6 +25,8 @@ public class Graph {
     
     public void add_edge(String station_start, String station_end, String line_colour, double line_time ) {
         
+        // IMPLEMENT FUNCTIONALITY WHERE IT ASSUMES THE TIME TO TRAVEL IN THE REVERSE DIRECTION IS THE SAME!
+
         if(find_vertex(station_start) == false) {
 
             add_vertex(station_start);
