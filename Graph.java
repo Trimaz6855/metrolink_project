@@ -151,7 +151,7 @@ public class Graph {
     public int get_station_count() {
         return vertices.length;
     }
-    
+    /* 
     public void dijkstras(String start, String end) {
 
         Boolean[] vertices_visited = new Boolean[vertices.length];
@@ -269,6 +269,7 @@ public class Graph {
         System.out.println("Total Journey Time: " + shortest_distance_to_start[route[route.length-1]]);
 
     }
+    */
 
     public void print_vertices() {
 
@@ -299,6 +300,37 @@ public class Graph {
             }
         }
         System.out.println(edges.length + "x" + edges.length + " matrix");
+
+    }
+
+    public void dijkstras(String start, String end) {
+        // Store the start and end vertex ids for ease of use.
+        int id_start = get_vertex_id_from_name(start);
+        int id_end = get_vertex_id_from_name(end);
+
+        // Set up the visited array to store which vertices have been visited, ensures all values start at false.
+        Boolean[] vertices_visited = new Boolean[vertices.length];
+        for(int i = 0; i < vertices.length; i ++ ) {
+            vertices_visited[i] = false;
+        }
+
+        // Set up the shortest distance array, ensuring all values start at infinity.
+        double[] shortest_distance_to_start = new double[vertices.length];
+        for(int i = 0; i < vertices.length; i ++ ) {
+            shortest_distance_to_start[i] = Double.POSITIVE_INFINITY;
+        }
+        shortest_distance_to_start[id_start] = 0;
+
+        // Set up the previous vertex array to store the index of the previous vertex visited.
+        // Starts out as being -1 as a placeholder for a null value.
+        int[] vertices_previous = new int[vertices.length];
+        for(int i = 0; i < vertices.length; i ++ ) {
+            vertices_previous[i] = -1;
+        }
+        vertices_previous[id_start] = id_start;
+
+
+
 
     }
 
