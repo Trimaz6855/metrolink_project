@@ -140,8 +140,12 @@ public class Graph {
 
     public String get_line_from_stations(int start, int end) {
 
-        return edges[start][end].get_line();
-
+        try {
+            return edges[start][end].get_line();
+        } catch (Exception e) {
+            System.err.println(e.getLocalizedMessage());
+            return e.getMessage();
+        }
     }
 
     public int get_station_count() {
@@ -173,23 +177,18 @@ public class Graph {
 
         vertices_visited[id_start] = true;
         shortest_distance_to_start[id_start] = 0; 
+        vertices_previous[id_start] = id_start;
         
         while(visited_all == false) {
 
             for(int i = 0; i < vertices.length; i ++ ) {
                 if(edges[id_current][i] != null) {
                     Edge edge_current = edges[id_current][i];
-
-                    if(vertices_visited[i] == false && shortest_distance_to_start[i] == Double.POSITIVE_INFINITY) {
-                        vertices_previous[i] = id_current;
-                        shortest_distance_to_start[i] = edge_current.get_weight();
-                    }
-                    else if(vertices_visited[i] == false && vertices_previous[i] != -1){
-                        int id_previous = vertices_previous[i];
-                        double weight_new = shortest_distance_to_start[id_previous] + edge_current.get_weight();
+                    if(vertices_visited[i] == false){;
+                        double weight_new = shortest_distance_to_start[id_current] + edge_current.get_weight();
                         if(weight_new < shortest_distance_to_start[i]) {
                             shortest_distance_to_start[i] = weight_new;
-                            vertices_previous[i] = id_previous;
+                            vertices_previous[i] = id_current;
                         }
                     }
                     
@@ -219,10 +218,14 @@ public class Graph {
         int route[] = new int[1];
         route[0] = id_end;
 
-        for(int i = 0; i < vertices_previous.length; i ++ ) {
-            System.out.println("Previous vertex for vertex " + get_vertex_name_from_id(i) + " is " + vertices_previous[i] + ", ");
+        for(int i = 0; i < shortest_distance_to_start.length; i ++ ) {
+            System.out.println("Shortest distance from " + vertices[id_start].get_vertex_name() + " to " + vertices[i].get_vertex_name() + ": " + shortest_distance_to_start[i]);
         }
-        System.out.println();
+
+        // for(int i = 0; i < vertices_previous.length; i ++ ) {
+        //     System.out.println("Previous vertex for vertex " + get_vertex_name_from_id(i) + " is " + vertices_previous[i] + ", ");
+        // }
+        // System.out.println();
 
         while(id_end != id_start){
 
@@ -236,7 +239,7 @@ public class Graph {
                 break;
             }
             else {
-                System.out.println(vertices_previous[id_end]);
+                System.out.println("Previous Vertex Id: " + vertices_previous[id_end]);
                 id_end = vertices_previous[id_end];
             }
 
@@ -245,17 +248,17 @@ public class Graph {
             route = new_route;
         }
         
-        int counter_stations = 2;
+        int counter_stations = 1;
 
-        for(int i = 0; i < route.length; i ++ ) {
-            System.out.print(route[i] + ", ");
-        }
-        System.out.println();
+        // for(int i = 0; i < route.length; i ++ ) {
+        //     System.out.print(route[i] + ", ");
+        // }
+        // System.out.println();
 
         while(counter_stations < route.length ) {
 
-            System.out.println("Getting Line at position edge[" + counter_stations + "-1][" + counter_stations + "]" );
-            System.out.println("Edge between stations: " +  vertices[route[counter_stations - 1]].get_vertex_name() + " and " + vertices[route[counter_stations]].get_vertex_name());
+            // System.out.println("Getting Line at position edge[" + counter_stations + "-1][" + counter_stations + "]" );
+            // System.out.println("Edge between stations: " +  vertices[route[counter_stations - 1]].get_vertex_name() + " and " + vertices[route[counter_stations]].get_vertex_name());
 
             System.out.println(get_vertex_name_from_id(route[counter_stations]) + " via " + get_line_from_stations(route[counter_stations-1], route[counter_stations]) + " line ");
 
