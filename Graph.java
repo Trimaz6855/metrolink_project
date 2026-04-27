@@ -309,7 +309,7 @@ public class Graph {
         int id_end = get_vertex_id_from_name(end);
 
         // Set up the visited array to store which vertices have been visited, ensures all values start at false.
-        Boolean[] vertices_visited = new Boolean[vertices.length];
+        boolean[] vertices_visited = new boolean[vertices.length];
         for(int i = 0; i < vertices.length; i ++ ) {
             vertices_visited[i] = false;
         }
@@ -329,8 +329,30 @@ public class Graph {
         }
         vertices_previous[id_start] = id_start;
 
+        // Stores a flag each iteration to say whether all vertices have been visited.
+        boolean visited_all = false;
 
+        while (visited_all == false) {
+            // Start at start vertex.
+            // Check all edges coming from start vertex.
+            // Assign shortest distances from start vertex to each vertex in the array.
+            // Assign previous vertex in array.
+            // Check if all vertices have been visted.
+            // If true then adjust flag.
+            // If false then dont adjust flag.
+            // Find vertex that is shortest distance from start vertex.
+            // Change current vertex to be this vertex.
+            // Repeat.
+            // Repeat until flag is true.
+        }
 
+        // Loop through previous vertex array, backtracking from end vertex to start.
+        // Add each vertex to a new array with variable length (reassign length before adding a new node each time).
+        // Make sure most recent node is at start of array, with start vertex being at index 0 once whole route has been added to array.
+        // Loop through array, printing array and line colour taken.
+        // Print out any line changes by storing current line then checking if it changes at next station.
+        // Print out total line changes, store in a counter variable.
+        // Print out total journey time.
 
     }
 
