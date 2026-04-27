@@ -64,6 +64,9 @@ public class Graph {
                         if(edges_new[id_start_vertex][id_end_vertex] == null || edges_new[id_start_vertex][id_end_vertex].get_weight() > line_time) {
                             edges_new[id_start_vertex][id_end_vertex] = new Edge(id_start_vertex, id_end_vertex, line_time, line_colour);
                         }
+                        if(edges_new[id_end_vertex][id_start_vertex] == null || edges_new[id_end_vertex][id_start_vertex].get_weight() > line_time) {
+                            edges_new[id_end_vertex][id_start_vertex] = new Edge(id_end_vertex, id_start_vertex, line_time, line_colour);
+                        }                        
                         break;
                 }
                 break;
