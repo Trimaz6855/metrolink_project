@@ -319,7 +319,8 @@ public class Graph {
             if(i + 1 < route.length && get_line_from_stations(route[i], route[i + 1]) != line_current) {
                 line_current = get_line_from_stations(route[i], route[i + 1]);
                 System.out.println("** Change line to " + line_current + " line **");
-                System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line");    
+                System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line"); 
+                shortest_distance_to_start[route[route.length - 1]] += 2;   
             }
         }
         System.out.println("Total journey time (mins) = " + shortest_distance_to_start[route[route.length - 1]]);
