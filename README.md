@@ -20,14 +20,14 @@ The program uses the assumption that changing between lines at stations takes ex
     * Will initially implement as a command-line UI then will implement graphically later.
 
 ### Task 2 
-- **[ ]** Output a valid, not necessarily shortest, route between the start and end station.
-- **[ ]** Output a list including all intermediate stations.
+- **[ / ]** Output a valid, not necessarily shortest, route between the start and end station.
+- **[ / ]** Output a list including all intermediate stations.
 
 ### Task 3
 - **[ ]** Output the shortest route between the start and end station.
     * Current plan is to use Dijkstra's algorithm.
-- **[ ]** Output the list of intermediate stations and total journey time.
-- **[ ]** Output any line changes that occur on the journey.
+- **[ / ]** Output the list of intermediate stations and total journey time.
+- **[ / ]** Output any line changes that occur on the journey.
 
 ### Task 4
 - **[ ]** Allow the user to select and use any journey conditions (examples given in the project overview).
