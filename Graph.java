@@ -248,7 +248,7 @@ public class Graph {
                             shortest_distance_to_start[i] = edge_current.get_weight() + shortest_distance_to_start[id_current];
                         }
                         vertices_previous[i] = id_current;
-                        // System.out.println("Set shortest distance to " + get_vertex_name_from_id(i) + " to " + shortest_distance_to_start[i] + " and its previous vertex to " + get_vertex_name_from_id(vertices_previous[i]));
+                        // System.out.println("Set shortest distance to " + get_vertex_name_from_id(i) + " to " + shortest_distance_to_start[i] + " and its previous vertex to " + get_vertex_name_from_id(vertices_previous[i]) + " route goes via the " + edge_current.get_line() + " line");
                     }
                     else {
                         double weight_new;
@@ -258,6 +258,7 @@ public class Graph {
                         else {
                             weight_new = shortest_distance_to_start[i] + edge_current.get_weight();
                         }
+                        // System.out.println("Current shortest distance from " + get_vertex_name_from_id(id_start) + " to " + get_vertex_name_from_id(i) + " comparing: " + weight_new + " < " + shortest_distance_to_start[i] + " via " + edge_current.get_line() + " line with previous vertex " + get_vertex_name_from_id(id_current));
                         if(weight_new < shortest_distance_to_start[i]) {
                             shortest_distance_to_start[i] = weight_new;
                             vertices_previous[i] = id_current;
@@ -348,7 +349,6 @@ public class Graph {
             }
         }
         System.out.println("Total journey time (mins) = " + shortest_distance_to_start[route[route.length - 1]]);
-
 
         // Print out any line changes by storing current line then checking if it changes at next station.
         // Print out total line changes, store in a counter variable.
