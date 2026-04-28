@@ -244,14 +244,15 @@ public class Graph {
                         if(line_changed == true) {
                             shortest_distance_to_start[i] = edge_current.get_weight() + shortest_distance_to_start[id_current] + 2;
                         }
-                        shortest_distance_to_start[i] = edge_current.get_weight() + shortest_distance_to_start[id_current];
+                        else {
+                            shortest_distance_to_start[i] = edge_current.get_weight() + shortest_distance_to_start[id_current];
+                        }
                         vertices_previous[i] = id_current;
                         // System.out.println("Set shortest distance to " + get_vertex_name_from_id(i) + " to " + shortest_distance_to_start[i] + " and its previous vertex to " + get_vertex_name_from_id(vertices_previous[i]));
                     }
                     else {
                         double weight_new;
                         if(line_changed == true) {
-                            shortest_distance_to_start[i] += 2;
                             weight_new = shortest_distance_to_start[i] + edge_current.get_weight() + 2;
                         }
                         else {
