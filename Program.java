@@ -34,7 +34,7 @@ public class Program {
                     switch (split_line.length) {
                         case 1:
                             line_colour = split_line[0];
-                            System.out.println("Line colour: " + line_colour);
+                            // System.out.println("Line colour: " + line_colour);
                             break;
                         case 3:
                             String station_start = split_line[0];
@@ -51,7 +51,7 @@ public class Program {
                     }
                 }
             }
-            graph.print_vertices();
+            // graph.print_vertices();
             // graph.print_edges();
         }
         catch(FileNotFoundException e) {
