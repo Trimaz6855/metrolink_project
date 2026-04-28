@@ -311,10 +311,18 @@ public class Graph {
 
         }
 
+        String line_current = get_line_from_stations(route[0], route[1]);
+
         // Loop through array, printing array and line colour taken.
         for(int i = 0; i < route.length; i ++ ) {
-            System.out.println(get_vertex_name_from_id(route[i]));
+            System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line");
+            if(i + 1 < route.length && get_line_from_stations(route[i], route[i + 1]) != line_current) {
+                line_current = get_line_from_stations(route[i], route[i + 1]);
+                System.out.println("** Change line to " + line_current + " line **");
+                System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line");    
+            }
         }
+        System.out.println("Total journey time (mins) = " + shortest_distance_to_start[route[route.length - 1]]);
 
 
         // Print out any line changes by storing current line then checking if it changes at next station.
