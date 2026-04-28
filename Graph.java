@@ -220,43 +220,66 @@ public class Graph {
             // Start at start vertex.
             // Check all edges coming from start vertex.
             for(int i = 0; i < vertices.length; i ++ ) {
+                // System.out.println(edges[id_current][i]);
                 if(edges[id_current][i] != null) {
                     Edge edge_current = edges[id_current][i];
                     // Assign shortest distances from start vertex to each vertex in the array.
                     // Assign previous vertex in array.
+                    // System.out.println(shortest_distance_to_start[i] + " == " + Double.POSITIVE_INFINITY);
                     if(shortest_distance_to_start[i] == Double.POSITIVE_INFINITY) {
-                        shortest_distance_to_start[i] = edge_current.get_weight();
+                        shortest_distance_to_start[i] = edge_current.get_weight() + shortest_distance_to_start[id_current];
                         vertices_previous[i] = id_current;
+                        // System.out.println("Set shortest distance to " + get_vertex_name_from_id(i) + " to " + shortest_distance_to_start[i] + " and its previous vertex to " + get_vertex_name_from_id(vertices_previous[i]));
                     }
                     else {
                         double weight_new = shortest_distance_to_start[i] + edge_current.get_weight();
                         if(weight_new < shortest_distance_to_start[i]) {
                             shortest_distance_to_start[i] = weight_new;
                             vertices_previous[i] = id_current;
+                            // System.out.println("Changed shortest distance to " + get_vertex_name_from_id(i) + " to " + shortest_distance_to_start[i] + " and its previous vertex to " + get_vertex_name_from_id(vertices_previous[i]));
                         }
                     }
-                    // Find vertex that is shortest distance from start vertex.
-                    if(shortest_distance_to_start[i] < weight_next_shortest) {
-                        id_next = i;
-                    }
                 }
-
-                // Check if all vertices have been visted.
-                for(int j = 0; j < vertices_visited.length; j ++ ) {
-                    if(vertices_visited[j] == false) {
-                        // If true then adjust flag.
-                        visited_all = true;
-                        break;
-                    }
-                    else {
-                        // If false then dont adjust flag.
-                        visited_all = false;
-                    }
-                }
-                // Change current vertex to be this vertex.
-                id_current = id_next;
-
+                
             }
+
+            // System.out.println("Current Vertex: " + get_vertex_name_from_id(id_current));
+            // for(int j = 0; j < shortest_distance_to_start.length; j ++ ) {
+            //     System.out.print(shortest_distance_to_start[j] + ", ");
+            // }
+            // System.out.println();
+            
+            // Find vertex that is shortest distance from start vertex.
+            for(int j = 0; j < shortest_distance_to_start.length; j ++ ) {
+                // System.out.println(shortest_distance_to_start[j] + " < " + weight_next_shortest);
+                if(shortest_distance_to_start[j] < weight_next_shortest && vertices_visited[j] == false) {
+                    if(shortest_distance_to_start[j] > 0) {
+                        weight_next_shortest = shortest_distance_to_start[j];
+                        id_next = j;
+                        // System.out.println("Changed next closest vertex to " + get_vertex_name_from_id(j) + " to " + shortest_distance_to_start[j]);
+                    }
+                }
+                else {
+                    weight_next_shortest = Double.POSITIVE_INFINITY;
+                }
+            }
+            
+            vertices_visited[id_current] = true;
+            
+            // Check if all vertices have been visted.
+            for(int j = 0; j < vertices_visited.length; j ++ ) {
+                visited_all = true;
+                if (vertices_visited[j] == false) {
+                    // If false then dont adjust flag.
+                    visited_all = false;
+                    break;
+
+                }
+            }
+
+            // Change current vertex to be this vertex.
+            id_current = id_next;
+
 
         }
 
@@ -266,12 +289,34 @@ public class Graph {
         route[0] = id_end;
 
         while(id_end != id_start) {
-            ;
+            
+            // Add each vertex to a new array with variable length (reassign length before adding a new node each time).
+            int[] route_new = new int[route.length + 1];
+            for(int i = route.length; i >= 1; i -- ) {
+                route_new[i] = route[i - 1];
+            }
+
+            if(id_end == -1 || vertices_previous[id_end] == -1 ) {
+                System.out.println("Previous Vertex id: " + vertices_previous[id_end]);
+                break;
+            }
+            else {
+                id_end = vertices_previous[id_end];
+                route_new[0] = id_end;
+            }
+
+            // Make sure most recent node is at start of array, with start vertex being at index 0 once whole route has been added to array.
+            
+            route = route_new;
+
         }
 
-        // Add each vertex to a new array with variable length (reassign length before adding a new node each time).
-        // Make sure most recent node is at start of array, with start vertex being at index 0 once whole route has been added to array.
         // Loop through array, printing array and line colour taken.
+        for(int i = 0; i < route.length; i ++ ) {
+            System.out.println(get_vertex_name_from_id(route[i]));
+        }
+
+
         // Print out any line changes by storing current line then checking if it changes at next station.
         // Print out total line changes, store in a counter variable.
         // Print out total journey time.
