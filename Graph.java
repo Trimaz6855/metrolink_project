@@ -205,10 +205,7 @@ public class Graph {
         String line_new = "";
 
         // Set up the array to store the line colour connecting the node with its previous.
-        String[] line_previous = new String[vertices.length];
-        for(int i = 0; i < vertices.length; i ++ ) {
-            line_previous[i] = null;
-        }
+        String[][] line_previous = new String[vertices.length][vertices.length];
 
         // Set up the visited array to store which vertices have been visited, ensures all values start at false.
         boolean[] vertices_visited = new boolean[vertices.length];
@@ -246,21 +243,15 @@ public class Graph {
                     
                     Edge edge_current = edges[id_current][i];
                     
-                    boolean line_changed = false;
-                    
                     double[] weights = edge_current.get_weights();
                     String[] lines = edge_current.get_lines();
-                    
-                    if(line_current == "") {
-                        line_new = lines[0];
-                    }
                     
                     // Assign shortest distances from start vertex to each vertex in the array.
                     // Assign previous vertex in array.
                     if(shortest_distance_to_start[i] == Double.POSITIVE_INFINITY) {
                         shortest_distance_to_start[i] = weights[0] + shortest_distance_to_start[id_current];
                         vertices_previous[i] = id_current;
-                        if(lines[0] != line_current) {
+                        if(line_current != lines[0]) {
                             line_new = lines[0];
                         }
                     }
@@ -270,11 +261,12 @@ public class Graph {
                             for(int j = 0; j < weights.length; j ++) {
                                 weight_new = shortest_distance_to_start[id_current] + weights[j];
                                 if(weight_new < shortest_distance_to_start[i]) {
-                                    shortest_distance_to_start[i] = weight_new;
                                     vertices_previous[i] = id_current;
-                                }
-                                if(lines[j] != line_current) {
-                                    line_new = lines[j];
+                                    if(lines[j] != line_current) {
+                                        line_new = lines[j];
+                                        weight_new += 2;
+                                    }
+                                    shortest_distance_to_start[i] = weight_new;
                                 }
                             }
                         }
@@ -282,20 +274,12 @@ public class Graph {
 
                     if(line_current != line_new) {
                         line_current = line_new;
-                        shortest_distance_to_start[i] += 2;
                     }
 
-                    line_previous[i] = line_current;
+                    line_previous[id_current][i] = line_current;
                 }
-                
-                
+                   
             }
-
-            // System.out.println("Current Vertex: " + get_vertex_name_from_id(id_current));
-            // for(int j = 0; j < shortest_distance_to_start.length; j ++ ) {
-            //     System.out.print(shortest_distance_to_start[j] + ", ");
-            // }
-            // System.out.println();
             
             // Find vertex that is shortest distance from start vertex.
             for(int j = 0; j < shortest_distance_to_start.length; j ++ ) {
@@ -358,13 +342,13 @@ public class Graph {
 
         }
 
-        line_current = line_previous[route[1]];
+        line_current = line_previous[route[0]][route[1]];
 
         // Loop through array, printing array and line colour taken.
         for(int i = 0; i < route.length; i ++ ) {
             System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line");
-            if(i + 1 < route.length && line_previous[route[i + 1]] != line_current) {
-                line_current = line_previous[route[i + 1]];
+            if(i + 1 < route.length && line_previous[route[i]][route[i + 1]] != line_current) {
+                line_current = line_previous[route[i]][route[i + 1]];
                 System.out.println("** Change line to " + line_current + " line **");
                 System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line"); 
                 // shortest_distance_to_start[route[route.length - 1]] += 2;   
