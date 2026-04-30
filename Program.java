@@ -1,7 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.Scanner;
 
 import java.util.regex.*;
@@ -84,8 +82,7 @@ public class Program {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        // System.setOut(new PrintStream(new FileOutputStream("results.txt")));
+    public static void main(String[] args) {
         Program new_program = new Program();
     }
 
