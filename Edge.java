@@ -2,14 +2,14 @@ public class Edge {
     
     private int vertex_start;
     private int vertex_end;
-    private double[] weights = new double[1];
-    private String[] lines = new String[1];
+    private double weight;
+    private String line;
 
     public Edge(int start, int end, double weight, String line) {
         this.vertex_start = start;
         this.vertex_end = end;
-        this.weights[0] = weight;
-        this.lines[0] = line;
+        this.weight = weight;
+        this.line = line;
     }
 
     public int get_start_vertex() {
@@ -20,45 +20,20 @@ public class Edge {
         return vertex_end;
     }
 
-    public double[] get_weights() {
-        return weights;
+    public double get_weight() {
+        return weight;
     }
 
-    public String[] get_lines() {
-        return lines;
+    public String get_line() {
+        return line;
     }
 
-    public void add_line(String line, double weight) {
-        
-        boolean line_exists = false;
-        for(int i = 0; i < lines.length; i ++ ) {
-            if(lines[i] == line) {
-                if(weight < weights[i]) {
-                    weights[i] = weight;
-                }
-                line_exists = true;
-            }
-        }
+    public void set_weight(int weight) {
+        this.weight = weight;
+    }
 
-        if(line_exists == false) {
-            double[] new_weights = new double[weights.length + 1];
-            
-            for(int i = 0; i < weights.length; i ++ ) {
-                new_weights[i] = weights[i];
-            }
-            new_weights[new_weights.length - 1] = weight; 
-            
-            String[] new_lines = new String[lines.length + 1];
-    
-            for(int i = 0; i < lines.length; i ++ ) {
-                new_lines[i] = lines[i];
-            }
-            new_lines[new_lines.length - 1] = line; 
-    
-            weights = new_weights;
-            lines = new_lines;
-        }
-
+    public void set_line(String line) {
+        this.line = line;
     }
 
 }

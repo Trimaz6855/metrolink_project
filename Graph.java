@@ -39,11 +39,13 @@ public class Graph {
         }
         
         Edge[][] edges_new = new Edge[vertices.length][vertices.length];
-
         if(edges != null && edges.length != 0) {
             for(int i = 0; i < edges.length; i ++ ) {
                 for(int j = 0; j < edges.length; j ++ ) {
                     edges_new[i][j] = edges[i][j];
+                    // if(i == j) {
+                    //     edges_new[i][j] = new Edge(-1, -1, 0, "Blank");
+                    // }
                 }
             }
         }
@@ -51,25 +53,23 @@ public class Graph {
         int id_start_vertex = get_vertex_id_from_name(station_start);
         int id_end_vertex = get_vertex_id_from_name(station_end);
 
-        if(id_start_vertex != -1 && id_end_vertex != 1) {
-
-            // Forward direction
-            if(edges_new[id_start_vertex][id_end_vertex] == null ) { 
-                edges_new[id_start_vertex][id_end_vertex] = new Edge(id_start_vertex, id_end_vertex, line_time, line_colour);
-            }
-            else {
-                edges_new[id_start_vertex][id_end_vertex].add_line(line_colour, line_time);
-            }
-
-
-            // Reverse direction
-            if(edges_new[id_end_vertex][id_start_vertex] == null ) {
-                edges_new[id_end_vertex][id_start_vertex] = new Edge(id_end_vertex, id_start_vertex, line_time, line_colour);
-            }                 
-            else {
-                edges_new[id_end_vertex][id_start_vertex].add_line(line_colour, line_time);
-            }   
-
+        switch (id_start_vertex) {
+            case -1:
+                break;
+            default:
+                switch (id_end_vertex) {
+                    case -1:
+                        break;
+                    default:
+                        if(edges_new[id_start_vertex][id_end_vertex] == null || edges_new[id_start_vertex][id_end_vertex].get_weight() > line_time) {
+                            edges_new[id_start_vertex][id_end_vertex] = new Edge(id_start_vertex, id_end_vertex, line_time, line_colour);
+                        }
+                        if(edges_new[id_end_vertex][id_start_vertex] == null || edges_new[id_end_vertex][id_start_vertex].get_weight() > line_time) {
+                            edges_new[id_end_vertex][id_start_vertex] = new Edge(id_end_vertex, id_start_vertex, line_time, line_colour);
+                        }                        
+                        break;
+                }
+                break;
         }
 
         this.edges = edges_new;
@@ -120,7 +120,7 @@ public class Graph {
         int id_start = get_vertex_id_from_name(start);
         int id_end = get_vertex_id_from_name(end);
 
-        if(edges[id_start][id_end] != null) {
+        if(edges[id_start][id_end] != null && edges[id_start][id_end].get_weight() > 0.0) {
             return true;
         }
         else {
@@ -138,15 +138,13 @@ public class Graph {
         
     }
 
-    public String[] get_line_from_stations(int start, int end) {
+    public String get_line_from_stations(int start, int end) {
 
         try {
-            return edges[start][end].get_lines();
+            return edges[start][end].get_line();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
-            String[] error = new String[1];
-            error[0] = e.getMessage();
-            return error;
+            return e.getMessage();
         }
     }
 
@@ -173,17 +171,7 @@ public class Graph {
                 System.out.print("[");
                 for(int j = 0; j < edges.length; j ++ ) {
                     if(edges[i][j] != null) {
-                        double[] weights = edges[i][j].get_weights();
-                        if(weights.length > 1) {
-                            System.out.print("[");
-                            for(int k = 0; k < weights.length; k ++ ) {
-                                System.out.print(weights[k] + ",");
-                            }
-                            System.out.print("]");
-                        }
-                        else {
-                            System.out.print(weights[0] + " ");
-                        }
+                        System.out.print(edges[i][j].get_weight() + " ");
                     }
                     else {
                         System.out.print("- ");
@@ -202,10 +190,6 @@ public class Graph {
         int id_end = get_vertex_id_from_name(end);
 
         String line_current = "";
-        String line_new = "";
-
-        // Set up the array to store the line colour connecting the node with its previous.
-        String[][] line_previous = new String[vertices.length][vertices.length];
 
         // Set up the visited array to store which vertices have been visited, ensures all values start at false.
         boolean[] vertices_visited = new boolean[vertices.length];
@@ -242,10 +226,17 @@ public class Graph {
                 if(edges[id_current][i] != null) {
                     
                     Edge edge_current = edges[id_current][i];
-                    
-                    double[] weights = edge_current.get_weights();
-                    String[] lines = edge_current.get_lines();
-                    
+                
+                    boolean line_changed = false;
+                    if(line_current == "") {
+                        line_current = edge_current.get_line();
+                        line_changed = true;
+                    }
+                    else if(line_current != edge_current.get_line()) {
+                        line_current = edge_current.get_line();
+                        line_changed = true;
+                    }
+
                     // Assign shortest distances from start vertex to each vertex in the array.
                     // Assign previous vertex in array.
                     // System.out.println(shortest_distance_to_start[i] + " == " + Double.POSITIVE_INFINITY);
@@ -257,7 +248,7 @@ public class Graph {
                             shortest_distance_to_start[i] = edge_current.get_weight() + shortest_distance_to_start[id_current];
                         }
                         vertices_previous[i] = id_current;
-                        // System.out.println("Set shortest distance to " + get_vertex_name_from_id(i) + " to " + shortest_distance_to_start[i] + " and its previous vertex to " + get_vertex_name_from_id(vertices_previous[i]));
+                        // System.out.println("Set shortest distance to " + get_vertex_name_from_id(i) + " to " + shortest_distance_to_start[i] + " and its previous vertex to " + get_vertex_name_from_id(vertices_previous[i]) + " route goes via the " + edge_current.get_line() + " line");
                     }
                     else {
                         double weight_new;
@@ -267,6 +258,7 @@ public class Graph {
                         else {
                             weight_new = shortest_distance_to_start[i] + edge_current.get_weight();
                         }
+                        // System.out.println("Current shortest distance from " + get_vertex_name_from_id(id_start) + " to " + get_vertex_name_from_id(i) + " comparing: " + weight_new + " < " + shortest_distance_to_start[i] + " via " + edge_current.get_line() + " line with previous vertex " + get_vertex_name_from_id(id_current));
                         if(weight_new < shortest_distance_to_start[i]) {
                             shortest_distance_to_start[i] = weight_new;
                             vertices_previous[i] = id_current;
@@ -277,31 +269,11 @@ public class Graph {
                 
             }
 
-
-                    // }
-                    // else {
-                    double weight_new;
-                    for(int j = 0; j < weights.length; j ++) {
-                        weight_new = shortest_distance_to_start[id_current] + weights[j];
-                        if(weight_new < shortest_distance_to_start[i]) {
-                            vertices_previous[i] = id_current;
-                            if(lines[j] != line_current) {
-                                line_new = lines[j];
-                                weight_new += 2;
-                            }
-                            shortest_distance_to_start[i] = weight_new;
-                        }
-                    }
-                    // }
-
-                    if(line_current != line_new) {
-                        line_current = line_new;
-                    }
-
-                    line_previous[id_current][i] = line_current;
-                }
-                   
-            }
+            // System.out.println("Current Vertex: " + get_vertex_name_from_id(id_current));
+            // for(int j = 0; j < shortest_distance_to_start.length; j ++ ) {
+            //     System.out.print(shortest_distance_to_start[j] + ", ");
+            // }
+            // System.out.println();
             
             // Find vertex that is shortest distance from start vertex.
             for(int j = 0; j < shortest_distance_to_start.length; j ++ ) {
@@ -364,20 +336,19 @@ public class Graph {
 
         }
 
-        line_current = line_previous[route[0]][route[1]];
+        line_current = get_line_from_stations(route[0], route[1]);
 
         // Loop through array, printing array and line colour taken.
         for(int i = 0; i < route.length; i ++ ) {
             System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line");
-            if(i + 1 < route.length && line_previous[route[i]][route[i + 1]] != line_current) {
-                line_current = line_previous[route[i]][route[i + 1]];
+            if(i + 1 < route.length && get_line_from_stations(route[i], route[i + 1]) != line_current) {
+                line_current = get_line_from_stations(route[i], route[i + 1]);
                 System.out.println("** Change line to " + line_current + " line **");
                 System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line"); 
                 // shortest_distance_to_start[route[route.length - 1]] += 2;   
             }
         }
         System.out.println("Total journey time (mins) = " + shortest_distance_to_start[route[route.length - 1]]);
-
 
         // Print out any line changes by storing current line then checking if it changes at next station.
         // Print out total line changes, store in a counter variable.
