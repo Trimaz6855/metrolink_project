@@ -248,29 +248,31 @@ public class Graph {
                     
                     // Assign shortest distances from start vertex to each vertex in the array.
                     // Assign previous vertex in array.
-                    if(shortest_distance_to_start[i] == Double.POSITIVE_INFINITY) {
-                        shortest_distance_to_start[i] = weights[0] + shortest_distance_to_start[id_current];
-                        vertices_previous[i] = id_current;
-                        if(line_current != lines[0]) {
-                            line_new = lines[0];
-                        }
-                    }
-                    else {
-                        double weight_new;
-                        if(weights.length > 1) {
-                            for(int j = 0; j < weights.length; j ++) {
-                                weight_new = shortest_distance_to_start[id_current] + weights[j];
-                                if(weight_new < shortest_distance_to_start[i]) {
-                                    vertices_previous[i] = id_current;
-                                    if(lines[j] != line_current) {
-                                        line_new = lines[j];
-                                        weight_new += 2;
-                                    }
-                                    shortest_distance_to_start[i] = weight_new;
-                                }
+                    // if(shortest_distance_to_start[i] == Double.POSITIVE_INFINITY) {
+                    //     for(int j = 0; j < weights.length; j ++ ) {
+                    //         shortest_distance_to_start[i] = weights[j] + shortest_distance_to_start[id_current];
+                    //         vertices_previous[i] = id_current;
+                    //         if(line_current != lines[j]) {
+                    //             line_new = lines[j];
+                    //         }
+                    //     }
+
+
+                    // }
+                    // else {
+                    double weight_new;
+                    for(int j = 0; j < weights.length; j ++) {
+                        weight_new = shortest_distance_to_start[id_current] + weights[j];
+                        if(weight_new < shortest_distance_to_start[i]) {
+                            vertices_previous[i] = id_current;
+                            if(lines[j] != line_current) {
+                                line_new = lines[j];
+                                weight_new += 2;
                             }
+                            shortest_distance_to_start[i] = weight_new;
                         }
                     }
+                    // }
 
                     if(line_current != line_new) {
                         line_current = line_new;
