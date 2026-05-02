@@ -1,8 +1,10 @@
 public class Graph {
     
     private int next_vertex_id = 0;
-    private Edge[][] edges;
+    private Edge[][][] edges;
     private Vertex[] vertices;
+    private String[] lines;
+    private String[] line_previous;
 
     public Graph() {
         ;
@@ -27,6 +29,24 @@ public class Graph {
         
         // IMPLEMENT FUNCTIONALITY WHERE IT ASSUMES THE TIME TO TRAVEL IN THE REVERSE DIRECTION IS THE SAME!
 
+        if(lines != null && lines.length != 0) {
+            boolean line_found = false;
+            lines_new = new String[lines.length + 1];
+            for(int i = 0; i < lines.length; i ++ ) {
+                if(lines[i] == line_colour) {
+                    line_found = true;
+                    break;
+                }
+                else {
+                    lines_new[i] = lines[i];
+                }
+            }
+            if(line_found == false) {
+                lines_new[lines_new.length-1] = line_colour;
+                lines = lines_new;
+            }
+        }
+
         if(find_vertex(station_start) == false) {
 
             add_vertex(station_start);
@@ -38,14 +58,13 @@ public class Graph {
             add_vertex(station_end);
         }
         
-        Edge[][] edges_new = new Edge[vertices.length][vertices.length];
+        Edge[][][] edges_new = new Edge[vertices.length][vertices.length][lines.length];
         if(edges != null && edges.length != 0) {
             for(int i = 0; i < edges.length; i ++ ) {
                 for(int j = 0; j < edges.length; j ++ ) {
-                    edges_new[i][j] = edges[i][j];
-                    // if(i == j) {
-                    //     edges_new[i][j] = new Edge(-1, -1, 0, "Blank");
-                    // }
+                    for(int k = 0; k < lines.length; k ++ ) {
+                        edges_new[i][j][k] = edges[i][j][k];
+                    }
                 }
             }
         }
@@ -53,23 +72,15 @@ public class Graph {
         int id_start_vertex = get_vertex_id_from_name(station_start);
         int id_end_vertex = get_vertex_id_from_name(station_end);
 
-        switch (id_start_vertex) {
-            case -1:
-                break;
-            default:
-                switch (id_end_vertex) {
-                    case -1:
-                        break;
-                    default:
-                        if(edges_new[id_start_vertex][id_end_vertex] == null || edges_new[id_start_vertex][id_end_vertex].get_weight() > line_time) {
-                            edges_new[id_start_vertex][id_end_vertex] = new Edge(id_start_vertex, id_end_vertex, line_time, line_colour);
-                        }
-                        if(edges_new[id_end_vertex][id_start_vertex] == null || edges_new[id_end_vertex][id_start_vertex].get_weight() > line_time) {
-                            edges_new[id_end_vertex][id_start_vertex] = new Edge(id_end_vertex, id_start_vertex, line_time, line_colour);
-                        }                        
-                        break;
+        if(id_start_vertex != -1 && id_end_vertex != -1) {
+            for(i = 0; i < lines.length; i ++ ) {
+                if(edges[id_start_vertex][id_end_vertex][i] == null) {
+                    edges[id_start_vertex][id_end_vertex][i] = new Edge(id_start_vertex, id_end_vertex, line_time, line_colour);
                 }
-                break;
+                if(edges[id_end_vertex][id_start_vertex][i] == null) {
+                    edges[id_end_vertex][id_start_vertex][i] = new Edge(id_end_vertex, id_start_vertex, line_time, line_colour);
+                }
+            }
         }
 
         this.edges = edges_new;
