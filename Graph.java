@@ -204,7 +204,7 @@ public class Graph {
                 for(int j = 0; j < edges.length; j ++ ) {
                     System.out.print("[");
                     for(int k = 0; k < lines.length; k ++ ) {
-                        if(edges[i][j] != null) {
+                        if(edges[i][j][k] != null) {
                             System.out.print(edges[i][j][k].get_weight() + " ");
                         }
                         else {
@@ -275,7 +275,7 @@ public class Graph {
                             
                             String line_new = edge_current[j].get_line();
                             if(line_previous[i] == null) {
-                                line_previous[i] = line_new;
+                                line_changed = false;
                             }
     
                             if(line_previous[id_current] != line_new) {
@@ -302,7 +302,7 @@ public class Graph {
                                     weight_new += 2;
                                 }
     
-                                if(weight_new < shortest_distance_to_start[i]) {
+                                if(weight_new <= shortest_distance_to_start[i]) {
                                     shortest_distance_to_start[i] = weight_new;
                                     vertices_previous[i] = id_current;
                                     line_previous[i] = edge_current[j].get_line();
@@ -393,6 +393,24 @@ public class Graph {
             }
         }
         System.out.println("Total journey time (mins) = " + shortest_distance_to_start[route[route.length - 1]]);
+
+        System.out.println("Deansgate/Castlefield lines to St. Peters Square lines:");
+        int id_1 = get_vertex_id_from_name("Deansgate/Castlefield");
+        int id_2 = get_vertex_id_from_name("St. Peter's Square");
+        for(int i = 0; i < edges[id_1][id_2].length; i ++ ) {
+            if(edges[id_1][id_2][i] != null) {
+                System.out.println("Line: " + edges[id_1][id_2][i].get_line() + ", Time: " + edges[id_1][id_2][i].get_weight());
+            }
+        }
+
+        System.out.println("Victoria lines to Exchange Square lines:");
+        id_1 = get_vertex_id_from_name("Victoria");
+        id_2 = get_vertex_id_from_name("Exchange Square");
+        for(int i = 0; i < edges[id_1][id_2].length; i ++ ) {
+            if(edges[id_1][id_2][i] != null) {
+                System.out.println("Line: " + edges[id_1][id_2][i].get_line() + ", Time: " + edges[id_1][id_2][i].get_weight());
+            }
+        }
 
         // Print out any line changes by storing current line then checking if it changes at next station.
         // Print out total line changes, store in a counter variable.
