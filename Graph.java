@@ -31,7 +31,7 @@ public class Graph {
 
         if(lines != null && lines.length != 0) {
             boolean line_found = false;
-            lines_new = new String[lines.length + 1];
+            String[] lines_new = new String[lines.length + 1];
             for(int i = 0; i < lines.length; i ++ ) {
                 if(lines[i] == line_colour) {
                     line_found = true;
@@ -45,6 +45,9 @@ public class Graph {
                 lines_new[lines_new.length-1] = line_colour;
                 lines = lines_new;
             }
+        }
+        else {
+            String[] lines_new = new String[1];
         }
 
         if(find_vertex(station_start) == false) {
@@ -73,7 +76,7 @@ public class Graph {
         int id_end_vertex = get_vertex_id_from_name(station_end);
 
         if(id_start_vertex != -1 && id_end_vertex != -1) {
-            for(i = 0; i < lines.length; i ++ ) {
+            for(int i = 0; i < lines.length; i ++ ) {
                 if(edges[id_start_vertex][id_end_vertex][i] == null) {
                     edges[id_start_vertex][id_end_vertex][i] = new Edge(id_start_vertex, id_end_vertex, line_time, line_colour);
                 }
@@ -131,7 +134,7 @@ public class Graph {
         int id_start = get_vertex_id_from_name(start);
         int id_end = get_vertex_id_from_name(end);
 
-        if(edges[id_start][id_end] != null && edges[id_start][id_end].get_weight() > 0.0) {
+        if(edges[id_start][id_end] != null && edges[id_start][id_end].length > 0) {
             return true;
         }
         else {
@@ -140,7 +143,7 @@ public class Graph {
 
     }
 
-    public Edge get_edge_from_stations(String start, String end) {
+    public Edge[] get_edge_from_stations(String start, String end) {
         
         int id_start = get_vertex_id_from_name(start);
         int id_end = get_vertex_id_from_name(end);
@@ -149,6 +152,7 @@ public class Graph {
         
     }
 
+    /*
     public String get_line_from_stations(int start, int end) {
 
         try {
@@ -158,6 +162,7 @@ public class Graph {
             return e.getMessage();
         }
     }
+    */
 
     public int get_station_count() {
         return vertices.length;
@@ -181,12 +186,16 @@ public class Graph {
             for(int i = 0; i < edges.length; i ++ ) {
                 System.out.print("[");
                 for(int j = 0; j < edges.length; j ++ ) {
-                    if(edges[i][j] != null) {
-                        System.out.print(edges[i][j].get_weight() + " ");
+                    System.out.print("[");
+                    for(int k = 0; k < lines.length; k ++ ) {
+                        if(edges[i][j] != null) {
+                            System.out.print(edges[i][j][k].get_weight() + " ");
+                        }
+                        else {
+                            System.out.print("- ");
+                        }
                     }
-                    else {
-                        System.out.print("- ");
-                    }
+                    System.out.print("]");
                 }
                 System.out.println("]"); 
             }
@@ -236,48 +245,43 @@ public class Graph {
                 // System.out.println(edges[id_current][i]);
                 if(edges[id_current][i] != null) {
                     
-                    Edge edge_current = edges[id_current][i];
-                
-                    boolean line_changed = false;
-                    if(line_current == "") {
-                        line_current = edge_current.get_line();
-                        line_changed = true;
-                    }
-                    else if(line_current != edge_current.get_line()) {
-                        line_current = edge_current.get_line();
-                        line_changed = true;
-                    }
-
-                    // Assign shortest distances from start vertex to each vertex in the array.
-                    // Assign previous vertex in array.
-                    // System.out.println(shortest_distance_to_start[i] + " == " + Double.POSITIVE_INFINITY);
-                    if(shortest_distance_to_start[i] == Double.POSITIVE_INFINITY) {
-                        if(line_changed == true) {
-                            shortest_distance_to_start[i] = edge_current.get_weight() + shortest_distance_to_start[id_current] + 2;
+                    Edge[] edge_current = edges[id_current][i];
+                    
+                    for(int j = 0; j < edge_current.length; j ++ ) {
+                        boolean line_changed = false;
+                        
+                        if(line_previous[i] != edge_current[j].get_line()) {
+                            line_changed = true;
                         }
-                        else {
-                            shortest_distance_to_start[i] = edge_current.get_weight() + shortest_distance_to_start[id_current];
-                        }
-                        vertices_previous[i] = id_current;
-                        // System.out.println("Set shortest distance to " + get_vertex_name_from_id(i) + " to " + shortest_distance_to_start[i] + " and its previous vertex to " + get_vertex_name_from_id(vertices_previous[i]) + " route goes via the " + edge_current.get_line() + " line");
-                    }
-                    else {
-                        double weight_new;
-                        if(line_changed == true) {
-                            weight_new = shortest_distance_to_start[i] + edge_current.get_weight() + 2;
-                        }
-                        else {
-                            weight_new = shortest_distance_to_start[i] + edge_current.get_weight();
-                        }
-                        // System.out.println("Current shortest distance from " + get_vertex_name_from_id(id_start) + " to " + get_vertex_name_from_id(i) + " comparing: " + weight_new + " < " + shortest_distance_to_start[i] + " via " + edge_current.get_line() + " line with previous vertex " + get_vertex_name_from_id(id_current));
-                        if(weight_new < shortest_distance_to_start[i]) {
-                            shortest_distance_to_start[i] = weight_new;
+                        
+                        // Assign shortest distances from start vertex to each vertex in the array.
+                        // Assign previous vertex in array.
+                        if(shortest_distance_to_start[i] == Double.POSITIVE_INFINITY) {
+                            double weight_new = edge_current[j].get_weight() + shortest_distance_to_start[id_current]; 
+                            if(line_changed == true) {
+                                shortest_distance_to_start[i] = weight_new + 2;
+                                line_previous[i] = edge_current[j].get_line();
+                            }
+                            else {
+                                shortest_distance_to_start[i] = weight_new;
+                                line_previous[i] = edge_current[j].get_line();
+                            }
                             vertices_previous[i] = id_current;
-                            // System.out.println("Changed shortest distance to " + get_vertex_name_from_id(i) + " to " + shortest_distance_to_start[i] + " and its previous vertex to " + get_vertex_name_from_id(vertices_previous[i]));
+                        }
+                        else {
+                            double weight_new = shortest_distance_to_start[i] + edge_current[j].get_weight();
+                            if(line_changed == true) {
+                                weight_new += 2;
+                            }
+
+                            if(weight_new < shortest_distance_to_start[i]) {
+                                shortest_distance_to_start[i] = weight_new;
+                                vertices_previous[i] = id_current;
+                                line_previous[i] = edge_current[j].get_line();
+                            }
                         }
                     }
                 }
-                
             }
 
             // System.out.println("Current Vertex: " + get_vertex_name_from_id(id_current));
@@ -347,13 +351,13 @@ public class Graph {
 
         }
 
-        line_current = get_line_from_stations(route[0], route[1]);
+        line_current = line_previous[route[1]];
 
         // Loop through array, printing array and line colour taken.
         for(int i = 0; i < route.length; i ++ ) {
             System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line");
-            if(i + 1 < route.length && get_line_from_stations(route[i], route[i + 1]) != line_current) {
-                line_current = get_line_from_stations(route[i], route[i + 1]);
+            if(i + 1 < route.length && line_previous[route[i + 1]] != line_current) {
+                line_current = line_previous[route[i + 1]];
                 System.out.println("** Change line to " + line_current + " line **");
                 System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line"); 
                 // shortest_distance_to_start[route[route.length - 1]] += 2;   
