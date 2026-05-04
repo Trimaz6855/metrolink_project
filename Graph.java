@@ -81,14 +81,13 @@ public class Graph {
 
         // System.out.println("Length of array lines: " + lines.length);
         if(id_start_vertex != -1 && id_end_vertex != -1) {
-            for(int i = 0; i < lines.length; i ++ ) {
-                // System.out.println("Length of edges[" + id_start_vertex + "][" + id_end_vertex + "][" + i + "]: " + edges_new[id_start_vertex][id_end_vertex][i]);
-                if(edges_new[id_start_vertex][id_end_vertex][i] == null) {
-                    edges_new[id_start_vertex][id_end_vertex][i] = new Edge(id_start_vertex, id_end_vertex, line_time, line_colour);
-                }
-                if(edges_new[id_end_vertex][id_start_vertex][i] == null) {
-                    edges_new[id_end_vertex][id_start_vertex][i] = new Edge(id_end_vertex, id_start_vertex, line_time, line_colour);
-                }
+            Edge[] edges_stored = edges_new[id_start_vertex][id_end_vertex];
+            // System.out.println("Length of edges[" + id_start_vertex + "][" + id_end_vertex + "][" + i + "]: " + edges_new[id_start_vertex][id_end_vertex][i]);
+            if(edges_new[id_start_vertex][id_end_vertex][edges_stored.length - 1] == null) {
+                edges_new[id_start_vertex][id_end_vertex][edges_stored.length - 1] = new Edge(id_start_vertex, id_end_vertex, line_time, line_colour);
+            }
+            if(edges_new[id_end_vertex][id_start_vertex][edges_stored.length - 1] == null) {
+                edges_new[id_end_vertex][id_start_vertex][edges_stored.length - 1] = new Edge(id_end_vertex, id_start_vertex, line_time, line_colour);
             }
         }
 
