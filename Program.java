@@ -84,7 +84,9 @@ public class Program {
                 input_gathered = true;
             }
         }
+        input_scanner.close();
     }
+    
 
     public static void main(String[] args) throws Exception {
         // System.setOut(new PrintStream(new FileOutputStream("results.txt")));
