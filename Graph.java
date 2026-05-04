@@ -263,32 +263,87 @@ public class Graph {
         while(visited_all == false) {
 
             // Loops through each edge connected to the current vertex.
+            for(int i = 0; i < vertices.length; i ++ ) {
+                // Checks its not null, if null doesnt continue.
+                if(edges[id_current][i] != null) {
+                    for(int j = 0; j < edges[id_current][i].length; j ++ ) { 
+                        if(edges[id_current][i][j] != null) {
+                            // If not null, stores the current edge.
+                            Edge edge_current = edges[id_current][i][j];
 
-            // Checks its not null, if null doesnt continue.
+                            // Checks if there has been a line change in between the this current vertex and the previous, if true a flag is set.
+                            boolean line_changed = false;
+                            if(id_current == id_start) { 
+                                line_changed = false;
+                            }
+                            else if(line_previous[i] != edge_current.get_line()) {
+                                line_changed = true;
+                            }
 
-            // If not null, stores the current edge.
+                            // Checks if the shortest distance to vertex is infinity.
+                            if(shortest_distance_to_start[i] == Double.POSITIVE_INFINITY) {
+                                // If shortest is infinity, sets shortest distance to be previous vertex distance + edge weight (+ 2 depending on flag).
+                                if(line_changed == true) {
+                                    shortest_distance_to_start[i] = shortest_distance_to_start[id_current] + edge_current.get_weight() + 2;
+                                }
+                                else {
+                                    shortest_distance_to_start[i] = shortest_distance_to_start[id_current] + edge_current.get_weight();
+                                }
+                                // Update previous vertex array and line array.
+                                vertices_previous[i] = id_current;
+                                line_previous[i] = edge_current.get_line();
+                            }
+                            else {
+                                // If not, calculates new weight = shortest distance + edge weight (+ 2 depending on flag).
+                                double weight_new;
+                                if(line_changed == true) {
+                                    weight_new = shortest_distance_to_start[id_current] + edge_current.get_weight() + 2;
+                                }
+                                else {
+                                    weight_new = shortest_distance_to_start[id_current] + edge_current.get_weight();
+                                }
+                                
+                                // Compare current and new weight, if new is less then current = new.
+                                if(weight_new < shortest_distance_to_start[i]) {
+                                    shortest_distance_to_start[i] = weight_new;
+                                    // Update previous vertex and line arrays.
+                                    vertices_previous[i] = id_current;
+                                    line_previous[i] = edge_current.get_line();
+                                }
 
-            // Checks if the shortest distance to vertex is infinity.
-
-            // Checks if there has been a line change in between the this current vertex and the previous, if true a flag is set.
-
-            // If shortest is infinity, sets shortest distance to be previous vertex distance + edge weight (+ 2 depending on flag).
-
-            // Update previous vertex array and line array.
-
-            // If not, calculates new weight = shortest distance + edge weight (+ 2 depending on flag).
-
-            // Compare current and new weight, if new is less then current = new.
-
-            // Update previous vertex and line arrays.
-
-            // Once loop is complete, update vertex visited array.
-
+                            }
+                        }
+                    }
+                }
+            }
+            
             // Then loop through shortest distance array to find closest non-visited vertex and set next id = id. 
-
+            double shortest_distance = Double.POSITIVE_INFINITY;
+            for(int i = 0; i < shortest_distance_to_start.length; i ++ ) {
+                if(shortest_distance_to_start[i] < shortest_distance) {
+                    if(shortest_distance_to_start[i] > 0) {
+                        id_next = i;
+                        shortest_distance = shortest_distance_to_start[i];
+                    }
+                }
+            }
+            
+            // Once loop is complete, update vertex visited array.
+            vertices_visited[id_current] = true;
+            
             // Check if all vertices have been visited.
-
+            for(int i = 0; i < vertices_visited.length; i ++ ) {
+                if(vertices_visited[i] == true) {
+                    visited_all = true;
+                }
+                else if(vertices_visited[i] == false){
+                    visited_all = false;
+                    break;
+                }
+            }
+            
             // Update id current to be id next.
+            id_current = id_next;
 
         }
 
