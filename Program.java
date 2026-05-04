@@ -13,10 +13,12 @@ public class Program {
 
     public Program() {
         
-        data_handler(new File("Metrolink_times_linecolour.csv"));
+        // data_handler(new File("Metrolink_times_linecolour.csv"));
+        data_handler(new File("deansgate.csv"));
         // data_handler(new File("test_times.csv"));
-        get_user_input();
         // graph.print_edges();
+        graph.print_specific_edges("Deansgate/Castlefield", "St. Peter's Square");
+        get_user_input();
         graph.dijkstras(desired_start, desired_end);
 
     }
