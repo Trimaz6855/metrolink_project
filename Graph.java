@@ -225,7 +225,7 @@ public class Graph {
         int id_start = get_vertex_id_from_name(start);
         int id_end = get_vertex_id_from_name(end);
 
-        String line_current = "";
+        // String line_current = "";
 
         // Set up the visited array to store which vertices have been visited, ensures all values start at false.
         boolean[] vertices_visited = new boolean[vertices.length];
@@ -248,6 +248,7 @@ public class Graph {
         }
         vertices_previous[id_start] = id_start;
 
+        // Sets up the previous line travelled array to store the line travelled to get to the vertex.
         String[] line_previous = new String[vertices.length];
         for(int i = 0; i < vertices.length; i ++ ){ 
             line_previous[i] = "-";
@@ -256,174 +257,46 @@ public class Graph {
         // Stores a flag that is updated each iteration to say whether all vertices have been visited.
         boolean visited_all = false;
         int id_current = id_start;
-        double weight_next_shortest = Double.POSITIVE_INFINITY;
         int id_next = -1;
 
-        while (visited_all == false) {
-            // Start at start vertex.
-            // Check all edges coming from start vertex.
-            for(int i = 0; i < vertices.length; i ++ ) {
-                // System.out.println(edges[id_current][i]);
-                if(edges[id_current][i] != null) {
-                    
-                    Edge[] edge_current = edges[id_current][i];
-                    
-                    for(int j = 0; j < edge_current.length; j ++ ) {
-                        
-                        if(edge_current[j] != null) {
-                            boolean line_changed = false;
-                            
-                            String line_new = edge_current[j].get_line();
-                            if(line_previous[i] == null) {
-                                line_changed = false;
-                            }
-    
-                            if(line_previous[id_current] != line_new) {
-                                line_changed = true;
-                            }
-                            
-                            // Assign shortest distances from start vertex to each vertex in the array.
-                            // Assign previous vertex in array.
-                            if(shortest_distance_to_start[i] == Double.POSITIVE_INFINITY) {
-                                double weight_new = edge_current[j].get_weight() + shortest_distance_to_start[id_current]; 
-                                if(line_changed == true) {
-                                    shortest_distance_to_start[i] = weight_new + 2;
-                                    line_previous[i] = edge_current[j].get_line();
-                                }
-                                else {
-                                    shortest_distance_to_start[i] = weight_new;
-                                    line_previous[i] = edge_current[j].get_line();
-                                }
-                                vertices_previous[i] = id_current;
-                            }
-                            else {
-                                double weight_new = shortest_distance_to_start[i] + edge_current[j].get_weight();
-                                if(line_changed == true) {
-                                    weight_new += 2;
-                                }
-    
-                                if(weight_new <= shortest_distance_to_start[i]) {
-                                    shortest_distance_to_start[i] = weight_new;
-                                    vertices_previous[i] = id_current;
-                                    line_previous[i] = edge_current[j].get_line();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        // loops through until all vertices have been visited.
+        while(visited_all == false) {
 
-            // System.out.println("Current Vertex: " + get_vertex_name_from_id(id_current));
-            // for(int j = 0; j < shortest_distance_to_start.length; j ++ ) {
-            //     System.out.print(shortest_distance_to_start[j] + ", ");
-            // }
-            // System.out.println();
-            
-            // Find vertex that is shortest distance from start vertex.
-            for(int j = 0; j < shortest_distance_to_start.length; j ++ ) {
-                // System.out.println(shortest_distance_to_start[j] + " < " + weight_next_shortest);
-                if(shortest_distance_to_start[j] < weight_next_shortest && vertices_visited[j] == false) {
-                    if(shortest_distance_to_start[j] > 0) {
-                        weight_next_shortest = shortest_distance_to_start[j];
-                        id_next = j;
-                        // System.out.println("Changed next closest vertex to " + get_vertex_name_from_id(j) + " to " + shortest_distance_to_start[j]);
-                    }
-                }
-                else {
-                    weight_next_shortest = Double.POSITIVE_INFINITY;
-                }
-            }
-            
-            vertices_visited[id_current] = true;
-            
-            // Check if all vertices have been visted.
-            for(int j = 0; j < vertices_visited.length; j ++ ) {
-                visited_all = true;
-                if (vertices_visited[j] == false) {
-                    // If false then dont adjust flag.
-                    visited_all = false;
-                    break;
+            // Loops through each edge connected to the current vertex.
 
-                }
-            }
+            // Checks its not null, if null doesnt continue.
 
-            // Change current vertex to be this vertex.
-            id_current = id_next;
+            // If not null, stores the current edge.
+
+            // Checks if the shortest distance to vertex is infinity.
+
+            // Checks if there has been a line change in between the this current vertex and the previous, if true a flag is set.
+
+            // If shortest is infinity, sets shortest distance to be previous vertex distance + edge weight (+ 2 depending on flag).
+
+            // Update previous vertex array and line array.
+
+            // If not, calculates new weight = shortest distance + edge weight (+ 2 depending on flag).
+
+            // Compare current and new weight, if new is less then current = new.
+
+            // Update previous vertex and line arrays.
+
+            // Once loop is complete, update vertex visited array.
+
+            // Then loop through shortest distance array to find closest non-visited vertex and set next id = id. 
+
+            // Check if all vertices have been visited.
+
+            // Update id current to be id next.
 
         }
 
-        // Loop through previous vertex array, backtracking from end vertex to start.
+        // Backtrack through vertices previous array and store route from start to end.
 
-        int[] route = new int[1];
-        route[0] = id_end;
+        // Loop through, printing the stations and the time.
 
-        while(id_end != id_start) {
-            
-            // Add each vertex to a new array with variable length (reassign length before adding a new node each time).
-            int[] route_new = new int[route.length + 1];
-            for(int i = route.length; i >= 1; i -- ) {
-                route_new[i] = route[i - 1];
-            }
 
-            if(id_end == -1 || vertices_previous[id_end] == -1 ) {
-                System.out.println("Previous Vertex id: " + vertices_previous[id_end]);
-                break;
-            }
-            else {
-                id_end = vertices_previous[id_end];
-                route_new[0] = id_end;
-            }
-
-            // Make sure most recent node is at start of array, with start vertex being at index 0 once whole route has been added to array.
-            
-            route = route_new;
-
-        }
-
-        line_current = line_previous[route[1]];
-
-        // Loop through array, printing array and line colour taken.
-        for(int i = 0; i < route.length; i ++ ) {
-            System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line");
-            if(i + 1 < route.length && line_previous[route[i + 1]] != line_current) {
-                line_current = line_previous[route[i + 1]];
-                System.out.println("** Change line to " + line_current + " line **");
-                System.out.println(get_vertex_name_from_id(route[i]) + " on " + line_current + " line"); 
-                // shortest_distance_to_start[route[route.length - 1]] += 2;   
-            }
-        }
-        System.out.println("Total journey time (mins) = " + shortest_distance_to_start[route[route.length - 1]]);
-
-        System.out.println("Deansgate/Castlefield to St. Peters Square lines:");
-        int id_1 = get_vertex_id_from_name("Deansgate/Castlefield");
-        int id_2 = get_vertex_id_from_name("St. Peter's Square");
-        for(int i = 0; i < edges[id_1][id_2].length; i ++ ) {
-            if(edges[id_1][id_2][i] != null) {
-                System.out.println("Line: " + edges[id_1][id_2][i].get_line() + ", Time: " + edges[id_1][id_2][i].get_weight());
-            }
-        }
-
-        System.out.println("Victoria to Exchange Square lines:");
-        id_1 = get_vertex_id_from_name("Victoria");
-        id_2 = get_vertex_id_from_name("Exchange Square");
-        for(int i = 0; i < edges[id_1][id_2].length; i ++ ) {
-            if(edges[id_1][id_2][i] != null) {
-                System.out.println("Line: " + edges[id_1][id_2][i].get_line() + ", Time: " + edges[id_1][id_2][i].get_weight());
-            }
-        }
-        System.out.println("Pomona to Cornbrook lines:");
-        id_1 = get_vertex_id_from_name("Pomona");
-        id_2 = get_vertex_id_from_name("Cornbrook");
-        for(int i = 0; i < edges[id_1][id_2].length; i ++ ) {
-            if(edges[id_1][id_2][i] != null) {
-                System.out.println("Line: " + edges[id_1][id_2][i].get_line() + ", Time: " + edges[id_1][id_2][i].get_weight());
-            }
-        }
-
-        // Print out any line changes by storing current line then checking if it changes at next station.
-        // Print out total line changes, store in a counter variable.
-        // Print out total journey time.
 
     }
-
 }   
