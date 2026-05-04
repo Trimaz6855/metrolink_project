@@ -394,7 +394,7 @@ public class Graph {
         }
         System.out.println("Total journey time (mins) = " + shortest_distance_to_start[route[route.length - 1]]);
 
-        System.out.println("Deansgate/Castlefield lines to St. Peters Square lines:");
+        System.out.println("Deansgate/Castlefield to St. Peters Square lines:");
         int id_1 = get_vertex_id_from_name("Deansgate/Castlefield");
         int id_2 = get_vertex_id_from_name("St. Peter's Square");
         for(int i = 0; i < edges[id_1][id_2].length; i ++ ) {
@@ -403,9 +403,17 @@ public class Graph {
             }
         }
 
-        System.out.println("Victoria lines to Exchange Square lines:");
+        System.out.println("Victoria to Exchange Square lines:");
         id_1 = get_vertex_id_from_name("Victoria");
         id_2 = get_vertex_id_from_name("Exchange Square");
+        for(int i = 0; i < edges[id_1][id_2].length; i ++ ) {
+            if(edges[id_1][id_2][i] != null) {
+                System.out.println("Line: " + edges[id_1][id_2][i].get_line() + ", Time: " + edges[id_1][id_2][i].get_weight());
+            }
+        }
+        System.out.println("Pomona to Cornbrook lines:");
+        id_1 = get_vertex_id_from_name("Pomona");
+        id_2 = get_vertex_id_from_name("Cornbrook");
         for(int i = 0; i < edges[id_1][id_2].length; i ++ ) {
             if(edges[id_1][id_2][i] != null) {
                 System.out.println("Line: " + edges[id_1][id_2][i].get_line() + ", Time: " + edges[id_1][id_2][i].get_weight());
