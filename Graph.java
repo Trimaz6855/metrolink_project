@@ -31,6 +31,9 @@ public class Graph {
             boolean line_found = find_colour(line_colour);
             if(line_found == false) {
                 Colour[] lines_new = new Colour[lines.length + 1];
+                for(int i = 0; i < lines.length; i ++ ) {
+                    lines_new[i] = lines[i];
+                }
                 lines_new[lines_new.length - 1] = new Colour(line_colour, next_colour_id);
                 lines = lines_new;
                 next_colour_id ++;
@@ -67,9 +70,14 @@ public class Graph {
 
         int id_start_vertex = get_vertex_id_from_name(station_start);
         int id_end_vertex = get_vertex_id_from_name(station_end);
-        for(int i = 0; i < lines.length; i ++ ) {
-            System.out.println(lines[i].get_colour_name());
-        }
+        // for(int i = 0; i < lines.length; i ++ ) {
+        //     if(lines[i] == null) {
+        //         System.out.println("Null value");
+        //     }
+        //     else {
+        //         System.out.println(lines[i].get_colour_name());
+        //     }
+        // }
         int id_line_colour = get_colour(line_colour);
 
         // System.out.println("Length of array lines: " + lines.length);
@@ -260,7 +268,6 @@ public class Graph {
             for(int j = 0; j < lines.length; j ++ ) {
                 if(i == id_start) {
                     shortest_distance_to_start[i][j] = 0;
-                    vertices_visted[i][j] = true;
                     vertex_previous[i][j] = -1;
                 }
                 else {
@@ -289,15 +296,15 @@ public class Graph {
                             if(id_current == id_start) {
                                 line_changed = false;
                             }
-                            else if(id_colour == id_colour_current) {
+                            else if(id_colour != id_colour_current) {
                                 line_changed = true;
                             }
                             
                             if(line_changed == true) {
                                 weight_new += 2;
                             }
-
-                            if(shortest_distance_to_start[i][id_colour] == Double.POSITIVE_INFINITY) {
+                            
+                            if(shortest_distance_to_start[i][id_colour] == Double.POSITIVE_INFINITY && weight_new < Double.POSITIVE_INFINITY) {
                                 shortest_distance_to_start[i][id_colour] = weight_new;
                                 vertex_previous[i][id_colour] = id_current;
                                 id_colour_current = id_colour;
@@ -314,6 +321,10 @@ public class Graph {
                 }
             }
 
+            System.out.println("Current id: " + id_current);
+            System.out.println("Current colour: " + id_colour_current);
+            vertices_visted[id_current][id_colour_current] = true;
+
             double current_shortest_distance = Double.POSITIVE_INFINITY;
             for(int i = 0; i < shortest_distance_to_start.length; i ++ ) {
                 for(int j = 0; j < shortest_distance_to_start[i].length; j ++ ) {
@@ -321,14 +332,15 @@ public class Graph {
                         if(shortest_distance_to_start[i][j] > 0) {
                             current_shortest_distance = shortest_distance_to_start[i][j];
                             id_next_vertex = i;
+                            System.out.println("i: " + i + " j: " + j);
                         }
                     }
                 }
             }
 
             id_current = id_next_vertex;
-            vertices_visted[id_current][id_colour_current] = true;
-
+            System.out.println("Next id: " + id_next_vertex);
+            
             visited_all = true;
             for(int i = 0; i < vertices_visted.length; i ++ ) {
                 for(int j = 0; j < vertices_visted[i].length; j ++ ) {
