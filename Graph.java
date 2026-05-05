@@ -67,6 +67,9 @@ public class Graph {
 
         int id_start_vertex = get_vertex_id_from_name(station_start);
         int id_end_vertex = get_vertex_id_from_name(station_end);
+        for(int i = 0; i < lines.length; i ++ ) {
+            System.out.println(lines[i].get_colour_name());
+        }
         int id_line_colour = get_colour(line_colour);
 
         // System.out.println("Length of array lines: " + lines.length);
