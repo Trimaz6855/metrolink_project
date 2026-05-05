@@ -1,9 +1,10 @@
 public class Graph {
     
     private int next_vertex_id = 0;
+    private int next_colour_id = 0;
     private Edge[][][] edges;
     private Vertex[] vertices;
-    private String[] lines;
+    private Colour[] lines;
 
     public Graph() {
         ;
@@ -28,31 +29,50 @@ public class Graph {
         
         // IMPLEMENT FUNCTIONALITY WHERE IT ASSUMES THE TIME TO TRAVEL IN THE REVERSE DIRECTION IS THE SAME!
 
-        // System.out.println("Line colour: " + line_colour);
+        // // System.out.println("Line colour: " + line_colour);
+        // if(lines != null && lines.length != 0) {
+        //     boolean line_found = false;
+        //     String[] lines_new = new String[lines.length + 1];
+        //     for(int i = 0; i < lines.length; i ++ ) {
+        //         if(lines[i].equals(line_colour)) {
+        //             line_found = true;
+        //             break;
+        //         }
+        //         else {
+        //             lines_new[i] = lines[i];
+        //         }
+        //     }
+        //     if(line_found == false) {
+        //         lines_new[lines_new.length-1] = line_colour;
+        //         // System.out.println("Lines reassignment 1");
+        //         lines = lines_new;
+        //     }
+        // }
+        // else {
+        //     String[] lines_new = new String[1];
+        //     lines_new[0] = line_colour;
+        //     // System.out.println("Lines reassignment 2");
+        //     lines = lines_new;
+        // }
+
         if(lines != null && lines.length != 0) {
-            boolean line_found = false;
-            String[] lines_new = new String[lines.length + 1];
-            for(int i = 0; i < lines.length; i ++ ) {
-                if(lines[i].equals(line_colour)) {
-                    line_found = true;
-                    break;
-                }
-                else {
-                    lines_new[i] = lines[i];
-                }
-            }
+            boolean line_found = find_colour(line_colour);
             if(line_found == false) {
-                lines_new[lines_new.length-1] = line_colour;
-                // System.out.println("Lines reassignment 1");
+                Colour[] lines_new = new Colour[lines.length + 1];
+                lines_new[lines_new.length - 1] = new Colour(line_colour, next_colour_id);
                 lines = lines_new;
+                next_colour_id ++;
             }
         }
         else {
-            String[] lines_new = new String[1];
-            lines_new[0] = line_colour;
-            // System.out.println("Lines reassignment 2");
+            Colour[] lines_new = new Colour[1];
+            lines_new[0] = new Colour(line_colour, next_colour_id);
             lines = lines_new;
+            next_colour_id ++;
         }
+
+
+
 
         if(find_vertex(station_start) == false) {
 
@@ -220,6 +240,33 @@ public class Graph {
             }
         }
         System.out.println("]");
+    }
+
+    public String get_colour(int id) {
+        for(int i = 0; i < lines.length; i ++ ) {
+            if(lines[i].get_colour_id() == id) {
+                return lines[i].get_colour_name();
+            }
+        }
+        return null;
+    }
+
+    public int get_colour(String name) {
+        for(int i = 0; i < lines.length; i ++ ) {
+            if(lines[i].get_colour_name().equals(name)) {
+                return lines[i].get_colour_id();
+            }
+        }
+        return -1;
+    }
+
+    public boolean find_colour(String name) {
+        for(int i = 0; i < lines.length; i ++ ) {
+            if(lines[i].get_colour_name().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void dijkstras(String start, String end) {
