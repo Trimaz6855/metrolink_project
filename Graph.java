@@ -262,7 +262,7 @@ public class Graph {
                 }
                 else {
                     shortest_distance_to_start[i][j] = Double.POSITIVE_INFINITY;
-                    shortest_distance_to_start[i][j] = false;
+                    vertices_visted[i][j] = false;
                     vertex_previous[i][j] = -1;
                 }
             }
@@ -295,13 +295,13 @@ public class Graph {
                             }
 
                             if(shortest_distance_to_start[i][id_colour] == Double.POSITIVE_INFINITY) {
-                                shortest_distance_to_start[i] = weight_new;
+                                shortest_distance_to_start[i][id_colour] = weight_new;
                                 vertex_previous[i][id_colour] = id_current;
                                 id_colour_current = id_colour;
                             }
                             else {
                                 if(weight_new < shortest_distance_to_start[i][id_colour]) {
-                                    shortest_distance_to_start[i] = weight_new;
+                                    shortest_distance_to_start[i][id_colour] = weight_new;
                                     vertex_previous[i][id_colour] = id_current;
                                     id_colour_current = id_colour;
                                 }
