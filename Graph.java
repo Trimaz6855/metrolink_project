@@ -315,7 +315,7 @@ public class Graph {
                                 }
                                 
                                 // Compare current and new weight, if new is less then current = new.
-                                if(weight_new < shortest_distance_to_start[i]) {
+                                if(weight_new <= shortest_distance_to_start[i]) {
                                     shortest_distance_to_start[i] = weight_new;
                                     // Update previous vertex and line arrays.
                                     vertices_previous[i] = id_current;
