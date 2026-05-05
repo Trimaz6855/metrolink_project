@@ -270,6 +270,7 @@ public class Graph {
 
         int id_current = id_start;
         int id_colour_current = -1;
+        int id_next_vertex = -1;
         
         while(visited_all == false) {
             
@@ -310,7 +311,41 @@ public class Graph {
                 }
             }
 
+            double current_shortest_distance = Double.POSITIVE_INFINITY;
+            for(int i = 0; i < shortest_distance_to_start.length; i ++ ) {
+                for(int j = 0; j < shortest_distance_to_start[i].length; j ++ ) {
+                    if(shortest_distance_to_start[i][j] < current_shortest_distance && vertices_visted[i][j] == false) {
+                        if(shortest_distance_to_start[i][j] > 0) {
+                            current_shortest_distance = shortest_distance_to_start[i][j];
+                            id_next_vertex = i;
+                        }
+                    }
+                }
+            }
+
+            id_current = id_next_vertex;
+            vertices_visted[id_current][id_colour_current] = true;
+
+            visited_all = true;
+            for(int i = 0; i < vertices_visted.length; i ++ ) {
+                for(int j = 0; j < vertices_visted[i].length; j ++ ) {
+                    if (vertices_visted[i][j] == false) {
+                        visited_all = false;
+                        break;
+                    }
+                }
+            }
+
         }
+
+        double distance_final = Double.POSITIVE_INFINITY;
+        for(int i = 0; i < shortest_distance_to_start[id_end].length; i ++ ) {
+            if(shortest_distance_to_start[id_end][i] < distance_final && shortest_distance_to_start[id_end][i] > 0) {
+                distance_final = shortest_distance_to_start[id_end][i];
+            }
+        }
+
+        System.out.println(distance_final);
 
 
 
