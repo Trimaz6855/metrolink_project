@@ -281,10 +281,10 @@ public class Graph {
                             }
                             else if(line_previous[id_current].equals(edge_current.get_line()) == false) {
                                 line_changed = true;
-                                System.out.println("5. " + get_vertex_name_from_id(id_current) + " to " + get_vertex_name_from_id(i) + " via " + line_previous[id_current] + " line vs " + edge_current.get_line() + " line");
+                                System.out.println("1. " + get_vertex_name_from_id(id_current) + " to " + get_vertex_name_from_id(i) + " via " + line_previous[id_current] + " line vs " + edge_current.get_line() + " line");
                             }
                             else {
-                                System.out.println("6. " +get_vertex_name_from_id(id_current) + " to " + get_vertex_name_from_id(i) + " via " + line_previous[id_current] + " line vs " + edge_current.get_line() + " line");
+                                System.out.println("2. " +get_vertex_name_from_id(id_current) + " to " + get_vertex_name_from_id(i) + " via " + line_previous[id_current] + " line vs " + edge_current.get_line() + " line");
                             }
 
                             // Checks if the shortest distance to vertex is infinity.
@@ -292,10 +292,10 @@ public class Graph {
                                 // If shortest is infinity, sets shortest distance to be previous vertex distance + edge weight (+ 2 depending on flag).
                                 if(line_changed == true) {
                                     shortest_distance_to_start[i] = shortest_distance_to_start[id_current] + edge_current.get_weight() + 2;
-                                    System.out.println("1. Distance on " + edge_current.get_line() + " line: " + shortest_distance_to_start[i]);
+                                    System.out.println("3. Distance on " + edge_current.get_line() + " line: " + shortest_distance_to_start[i]);
                                 }
                                 else {
-                                    System.out.println("3. Distance on " + edge_current.get_line() + " line: " + shortest_distance_to_start[i]);
+                                    System.out.println("4. Distance on " + edge_current.get_line() + " line: " + shortest_distance_to_start[i]);
                                     shortest_distance_to_start[i] = shortest_distance_to_start[id_current] + edge_current.get_weight();
                                 }
                                 // Update previous vertex array and line array.
@@ -307,8 +307,11 @@ public class Graph {
                                 double weight_new = shortest_distance_to_start[id_current] + edge_current.get_weight();
                                 if(line_changed == true) {
                                     weight_new += 2;
-                                    System.out.println("4. Distance on " + line_previous[i] + " line: " + shortest_distance_to_start[i]);
-                                    System.out.println("2. Distance on " + edge_current.get_line() + " line: " + weight_new);
+                                    System.out.println("5. Distance on " + line_previous[i] + " line: " + shortest_distance_to_start[i]);
+                                    System.out.println("6. Distance on " + edge_current.get_line() + " line: " + weight_new);
+                                }
+                                else {
+                                    System.out.println("7. Distance on" + edge_current.get_line() + " line: " + weight_new);
                                 }
                                 
                                 // Compare current and new weight, if new is less then current = new.
