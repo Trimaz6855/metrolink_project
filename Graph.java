@@ -338,17 +338,12 @@ public class Graph {
                 }
             }
 
-            id_current = id_next_vertex;
-            System.out.println("Next id: " + id_next_vertex);
-            
-            visited_all = true;
-            for(int i = 0; i < vertices_visted.length; i ++ ) {
-                for(int j = 0; j < vertices_visted[i].length; j ++ ) {
-                    if (vertices_visted[i][j] == false) {
-                        visited_all = false;
-                        break;
-                    }
-                }
+            if(current_shortest_distance == Double.POSITIVE_INFINITY) {
+                break;
+            }
+            else {
+                id_current = id_next_vertex;
+                System.out.println("Next id: " + id_next_vertex);
             }
 
         }
