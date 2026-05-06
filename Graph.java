@@ -321,8 +321,8 @@ public class Graph {
                             else {
                                 if(weight_new < shortest_distance_to_start[i][id_colour]) {
                                     shortest_distance_to_start[i][id_colour] = weight_new;
-                                    vertex_previous[i][id_colour][0] = id_current;
-                                    vertex_previous[i][id_colour][1] = id_colour;
+                                    vertex_previous[i][id_colour][0] = id_colour_current;
+                                    vertex_previous[i][id_colour][1] = id_colour_current;
                                 }
                             }
                         }
@@ -371,11 +371,13 @@ public class Graph {
 
         int[][] route = new int[1][2];
         route[0][0] = id_end;
-        route[0][1] = -1;
         int id_line_next = vertex_previous[id_end][id_shortest_line][1];
+        route[0][1] = id_line_next;
         
+        System.out.println(get_vertex_name_from_id(id_end) + " via " + get_colour(id_line_next) + " line");
+
         while(id_end != id_start) {
-            
+
             int[][] route_new = new int[route.length + 1][2];
             for(int i = route.length; i > 0; i -- ) {
                 route_new[i][0] = route[i - 1][0];
@@ -389,6 +391,8 @@ public class Graph {
                 route_new[0][0] = id_end;
                 route_new[0][1] = id_line_next; 
             }
+
+            System.out.println(get_vertex_name_from_id(id_next_vertex) + " via " + get_colour(id_line_next) + " line");
 
             route = route_new;
 
