@@ -290,15 +290,23 @@ public class Graph {
                         if(edges[id_current][i][j] != null) {
                             Edge edge_current = edges[id_current][i][j];
                             int id_colour = get_colour(edge_current.get_line());
-                            double weight_new = shortest_distance_to_start[id_current][id_colour] + edge_current.get_weight();
-
+                            
                             boolean line_changed = false;
+
+                            if(id_colour_current == -1) {
+                                id_colour_current = id_colour;
+                            }
+
+                            double weight_new = shortest_distance_to_start[id_current][id_colour_current] + edge_current.get_weight();
+
                             if(id_current == id_start) {
                                 line_changed = false;
                             }
+
                             else if(id_colour != id_colour_current) {
                                 line_changed = true;
                             }
+                            
                             
                             if(line_changed == true) {
                                 weight_new += 2;
@@ -307,13 +315,11 @@ public class Graph {
                             if(shortest_distance_to_start[i][id_colour] == Double.POSITIVE_INFINITY && weight_new < Double.POSITIVE_INFINITY) {
                                 shortest_distance_to_start[i][id_colour] = weight_new;
                                 vertex_previous[i][id_colour] = id_current;
-                                id_colour_current = id_colour;
                             }
                             else {
                                 if(weight_new < shortest_distance_to_start[i][id_colour]) {
                                     shortest_distance_to_start[i][id_colour] = weight_new;
                                     vertex_previous[i][id_colour] = id_current;
-                                    id_colour_current = id_colour;
                                 }
                             }
                         }
@@ -321,18 +327,20 @@ public class Graph {
                 }
             }
 
-            System.out.println("Current id: " + id_current);
-            System.out.println("Current colour: " + id_colour_current);
+            // System.out.println("Current id: " + id_current);
+            // System.out.println("Current colour: " + id_colour_current);
             vertices_visted[id_current][id_colour_current] = true;
 
             double current_shortest_distance = Double.POSITIVE_INFINITY;
+            int id_colour_next = -1;
             for(int i = 0; i < shortest_distance_to_start.length; i ++ ) {
                 for(int j = 0; j < shortest_distance_to_start[i].length; j ++ ) {
                     if(shortest_distance_to_start[i][j] < current_shortest_distance && vertices_visted[i][j] == false) {
                         if(shortest_distance_to_start[i][j] > 0) {
                             current_shortest_distance = shortest_distance_to_start[i][j];
                             id_next_vertex = i;
-                            System.out.println("i: " + i + " j: " + j);
+                            id_colour_next = j;
+                            // System.out.println("i: " + i + " j: " + j);
                         }
                     }
                 }
@@ -343,17 +351,28 @@ public class Graph {
             }
             else {
                 id_current = id_next_vertex;
-                System.out.println("Next id: " + id_next_vertex);
+                id_colour_current = id_colour_next;
+                // System.out.println("Next id: " + id_next_vertex);
             }
 
         }
 
         double distance_final = Double.POSITIVE_INFINITY;
+        // int id_shortest_line = -1;
         for(int i = 0; i < shortest_distance_to_start[id_end].length; i ++ ) {
             if(shortest_distance_to_start[id_end][i] < distance_final && shortest_distance_to_start[id_end][i] > 0) {
                 distance_final = shortest_distance_to_start[id_end][i];
+                // id_shortest_line = i;
             }
         }
+
+        // int[] route = new int[1];
+        // route[0] = id_end;
+
+        // while(id_end != id_start) {
+
+        // }
+        
 
         System.out.println(distance_final);
 
