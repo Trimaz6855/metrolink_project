@@ -32,7 +32,7 @@ The program uses the assumption that changing between lines at stations takes ex
 ### Task 4
 - **[ ]** Allow the user to select and use any journey conditions (examples given in the project overview).
 - **[ ]** Calculate the journey time based off of any selected conditions.
-- **[ ]** Output the total number of changes on the route.
+- **[ / ]** Output the total number of changes on the route.
 
 ### Task 5
 - **[ ]** Allow the user to specify any station closures.
