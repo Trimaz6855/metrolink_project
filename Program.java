@@ -18,7 +18,7 @@ public class Program {
         data_handler(new File("Metrolink_times_linecolour.csv"));
         while(true) {
             get_gui_input();
-            // System.out.println(desired_start + desired_end);
+            System.out.println(desired_start + desired_end);
             if(graph.find_vertex(desired_start) == true && graph.find_vertex(desired_start) == true) {
                 break;
             }
