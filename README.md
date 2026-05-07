@@ -24,7 +24,7 @@ The program uses the assumption that changing between lines at stations takes ex
 - **[ / ]** Output a list including all intermediate stations.
 
 ### Task 3
-- **[ ]** Output the shortest route between the start and end station.
+- **[ / ]** Output the shortest route between the start and end station.
     * Current plan is to use Dijkstra's algorithm.
 - **[ / ]** Output the list of intermediate stations and total journey time.
 - **[ / ]** Output any line changes that occur on the journey.
