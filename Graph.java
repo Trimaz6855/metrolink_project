@@ -319,7 +319,7 @@ public class Graph {
                                 vertex_previous[i][id_colour][1] = id_colour_current;
                             }
                             else {
-                                if(weight_new < shortest_distance_to_start[i][id_colour]) {
+                                if(weight_new <= shortest_distance_to_start[i][id_colour]) {
                                     shortest_distance_to_start[i][id_colour] = weight_new;
                                     vertex_previous[i][id_colour][0] = id_current;
                                     vertex_previous[i][id_colour][1] = id_colour_current;
