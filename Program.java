@@ -6,48 +6,58 @@ import java.util.Scanner;
 
 import java.util.regex.*;
 
+/**
+  * The main program file which handles the data input and then performs the Dijkstra's algorithm on the graph.
+  **/
 public class Program {
     
     private Graph graph = new Graph();
     private String desired_start, desired_end;
 
+    /**
+      * The constructor for the main program which calls the data handler, gets the user input and then calls Dijkstra's. 
+      **/
     public Program() {
-        
+    
         data_handler(new File("Metrolink_times_linecolour.csv"));
-        // data_handler(new File("deansgate.csv"));
-        // data_handler(new File("test_times.csv"));
-        // graph.print_edges();
-        // graph.print_specific_edges("Deansgate/Castlefield", "St. Peter's Square");
         get_user_input();
         graph.dijkstras(desired_start, desired_end);
 
     }
 
+    /**
+      * The data handler function, parses the data from the input file and adds the edges and vertices to the graph.
+      * @param times_stations File - the input file containing the tram lines between stations.
+      **/
     public void data_handler(File times_stations) {
 
+        // Attempts to open the station and times file passed into the data handler.
         try(Scanner new_scanner = new Scanner(times_stations)) {
+            // Defines the regex condition to match when splitting the lines
             String regex = ",";
             String line_colour = "Blank";
+            // Loops through each line in the file.
             while(new_scanner.hasNextLine()) {
                 String line = new_scanner.nextLine();
+                // Checks that the line is not the line with the format of the headers.
                 Pattern pattern = Pattern.compile("^From ");
                 Matcher matcher = pattern.matcher(line);
                 boolean match_found = matcher.find();
+                // Splits up the line according to the regex if its not the header line.
                 if(match_found == false) {
                     String[] split_line = line.split(regex);
                     switch (split_line.length) {
+                        // This case handles the lines in the input file that contain the colours.
                         case 1:
                             line_colour = split_line[0];
-                            // System.out.println("Line colour: " + line_colour);
                             break;
+                        // This case handles the lines in the input file containing the station a tram line starts at, the station it ends at and the time taken for the line.
                         case 3:
                             String station_start = split_line[0];
                             String station_end = split_line[1];
+                            // Converts the time taken for the tram line from a string to a double.
                             double line_time = Double.parseDouble(split_line[2].strip());
-                            // System.out.println("From " + station_start + " to " + station_end + " in " + line_time + " minutes." );
-
                             graph.add_edge(station_start, station_end, line_colour, line_time);
-                            
                             break;
                         default:
                             System.out.println("Shouldn't print!");
@@ -55,14 +65,17 @@ public class Program {
                     }
                 }
             }
-            // graph.print_vertices();
-            // graph.print_edges();
         }
+        // Prevents the program trying to open a non-existent file.
         catch(FileNotFoundException e) {
             System.err.println("File not found.");
         }
     }
 
+    /**
+      * Gets the input from the user and validates the stations against the stations in the graph.
+      * Requires the user to enter valid start and end stations. 
+      */
     public void get_user_input() {
         Boolean input_gathered = false;
         Scanner input_scanner = new Scanner(System.in);

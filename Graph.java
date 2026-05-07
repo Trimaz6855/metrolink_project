@@ -1,3 +1,6 @@
+/**
+  * A class to represent a graph data structure.
+  **/
 public class Graph {
     
     private int next_vertex_id = 0;
@@ -6,10 +9,17 @@ public class Graph {
     private Vertex[] vertices;
     private Colour[] lines;
 
+    /**
+      * Constructor method for the graph data structure.
+      **/
     public Graph() {
         ;
     }
 
+    /**
+      * Adds a new vertex to the graph.
+      * @param name String - the name of the vertex to be added to the graph.
+      **/
     public void add_vertex(String name) {
 
         next_vertex_id ++ ;
@@ -25,6 +35,13 @@ public class Graph {
 
     }
     
+    /**
+      * Adds a new forwards and backwards edge to the graph.
+      * @param station_start int - the unique id of the vertex the edge starts at.
+      * @param station_end int - the unique id of the vertex the edge ends at.
+      * @param line_colour String - the name of the tram line colour the edge is on.
+      * @param line_time double - the weight of the edge.
+      **/
     public void add_edge(String station_start, String station_end, String line_colour, double line_time ) {
         
         if(lines != null && lines.length != 0) {
@@ -70,19 +87,9 @@ public class Graph {
 
         int id_start_vertex = get_vertex_id_from_name(station_start);
         int id_end_vertex = get_vertex_id_from_name(station_end);
-        // for(int i = 0; i < lines.length; i ++ ) {
-        //     if(lines[i] == null) {
-        //         System.out.println("Null value");
-        //     }
-        //     else {
-        //         System.out.println(lines[i].get_colour_name());
-        //     }
-        // }
         int id_line_colour = get_colour(line_colour);
 
-        // System.out.println("Length of array lines: " + lines.length);
         if(id_start_vertex != -1 && id_end_vertex != -1) {
-            // System.out.println("Length of edges[" + id_start_vertex + "][" + id_end_vertex + "][" + i + "]: " + edges_new[id_start_vertex][id_end_vertex][i]);
             if(edges_new[id_start_vertex][id_end_vertex][id_line_colour] == null) {
                 edges_new[id_start_vertex][id_end_vertex][id_line_colour] = new Edge(id_start_vertex, id_end_vertex, line_time, line_colour);
             }
@@ -95,6 +102,11 @@ public class Graph {
 
     }
 
+    /**
+      * Checks to see if a vertex of the input name exists in the graph.
+      * @param name String - the name of the vertex.
+      * @return boolean - returns true if the vertex exists in the graph.
+      **/
     public boolean find_vertex(String name) {
         
         if(vertices != null) {
@@ -108,6 +120,11 @@ public class Graph {
         return false;
     }
 
+    /**
+      * Getter method for the unique id of a vertex using the name provided.
+      * @param name String - the name of the vertex.
+      * @return int - the unique id of the vertex with the name provided, -1 is returned if the vertex doesn't exist in the graph.
+      **/
     public int get_vertex_id_from_name(String name) {
         for(int i = 0; i < vertices.length; i ++ ) {
             if(vertices[i].get_vertex_name().equals(name)) {
@@ -117,6 +134,11 @@ public class Graph {
         return -1;
     }
 
+    /**
+      * Getter method for the name of a vertex using the unique id provided.
+      * @param id int - the unique id of the vertex.
+      * @return String - the name of the vertex.
+      **/
     public String get_vertex_name_from_id(int id) {
         try {
             return vertices[id].get_vertex_name();
@@ -126,28 +148,30 @@ public class Graph {
         }
     }
 
+    /**
+      * Getter method for the actual vertex object.
+      * @param name String - the name of the vertex.
+      * @return Vertex - the vertex object with the provided name.
+      **/
     public Vertex get_vertex(String name) {
         return vertices[get_vertex_id_from_name(name)];
     }
     
+    /**
+      * Alternative getter method for the vertex object.
+      * @param id int - the unique id of the vertex.
+      * @return Vertex - the vertex object corresponding to the unique id.
+      **/
     public Vertex get_vertex(int id) {
         return vertices[id];
     }
 
-    public Boolean find_edge(String start, String end) {
-        
-        int id_start = get_vertex_id_from_name(start);
-        int id_end = get_vertex_id_from_name(end);
-
-        if(edges[id_start][id_end] != null && edges[id_start][id_end].length > 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-
-    }
-
+    /**
+      * Getter method for the array of edges starting at the start vertex and ending at the end vertex.
+      * @param start String - the name of the start vertex.
+      * @param end String - the name of the end vertex.
+      * @return Edge[] - 1D array of edges between the two vertices.
+      **/
     public Edge[] get_edge_from_stations(String start, String end) {
         
         int id_start = get_vertex_id_from_name(start);
@@ -157,22 +181,17 @@ public class Graph {
         
     }
 
-    /*
-    public String get_line_from_stations(int start, int end) {
-
-        try {
-            return edges[start][end].get_line();
-        } catch (Exception e) {
-            System.err.println(e.getLocalizedMessage());
-            return e.getMessage();
-        }
-    }
-    */
-
+    /**
+      * Getter method for the total number of vertices/stations in the graph.
+      * @return int - the number of vertices/graphs.
+      **/
     public int get_station_count() {
         return vertices.length;
     }
 
+    /**
+      * Prints out the vertices in order. 
+      **/
     public void print_vertices() {
 
         if(vertices != null) {
@@ -185,6 +204,9 @@ public class Graph {
 
     }
 
+    /**
+      * Prints out the edges in order.
+      **/
     public void print_edges() {
 
         if(edges != null) {
@@ -209,6 +231,11 @@ public class Graph {
 
     }
 
+    /**
+      * Prints all the edges between two specific vertices. 
+      * @param start String - the vertex the edges start at.
+      * @param end String - the vertex the edges end at.
+      **/
     public void print_specific_edges(String start, String end) {
         int id_start = get_vertex_id_from_name(start);
         int id_end = get_vertex_id_from_name(end);
@@ -222,6 +249,11 @@ public class Graph {
         System.out.println("]");
     }
 
+    /**
+      * Getter method for the name of a colour from its unique id.
+      * @param id int - the unique id of the colour.
+      * @return String - the name of the colour.
+      **/
     public String get_colour(int id) {
         for(int i = 0; i < lines.length; i ++ ) {
             if(lines[i].get_colour_id() == id) {
@@ -231,6 +263,11 @@ public class Graph {
         return null;
     }
 
+    /**
+      * Getter method for the unique id of a colour from its name.
+      * @param name String - the name of the colour.
+      * @return int - the unique id of the colour.
+      **/
     public int get_colour(String name) {
         for(int i = 0; i < lines.length; i ++ ) {
             if(lines[i].get_colour_name().equals(name)) {
@@ -240,6 +277,11 @@ public class Graph {
         return -1;
     }
 
+    /**
+      * Checks if the colour with that name exists.
+      * @param name String - the name of the colour.
+      * @return boolean - returns true if the colour exists, false if not.
+      **/
     public boolean find_colour(String name) {
         for(int i = 0; i < lines.length; i ++ ) {
             if(lines[i].get_colour_name().equals(name)) {
@@ -249,6 +291,11 @@ public class Graph {
         return false;
     }
 
+    /**
+      * Performs a slightly modified version of Dijkstra's algorithm on the multigraph. 
+      * @param start String - the name of the start vertex.
+      * @param end String - the name of the end vertex.
+      **/
     public void dijkstras(String start, String end) {
 
         // Store the start and end vertex ids for ease of use.
@@ -264,6 +311,7 @@ public class Graph {
         boolean[][] vertices_visted = new boolean[vertices.length][lines.length];
         // Set up previous vertex array.
         int[][][] vertex_previous = new int[vertices.length][lines.length][2];
+        // Initialises all the shortest distances to infinity, the previous vertex ids to be -1 and the vertex visited flag to be false (becasuse they havent been visited yet).
         for(int i = 0; i < vertices.length; i ++ ) { 
             for(int j = 0; j < lines.length; j ++ ) {
                 if(i == id_start) {
@@ -279,10 +327,14 @@ public class Graph {
             }
         }
 
+        // Stores the current start vertex for edges.
         int id_current = id_start;
+        // Stores the id of the line colour used to travel to the current start vertex.
         int id_colour_current = -1;
+        // Stores the id of the vertex with the next shortest distance to it.
         int id_next_vertex = -1;
         
+        // Dijkstras pathfinding section.
         while(visited_all == false) {
             
             for(int i = 0; i < vertices.length; i ++ ) { 
@@ -330,10 +382,9 @@ public class Graph {
                 }
             }
 
-            // System.out.println("Current id: " + id_current);
-            // System.out.println("Current colour: " + id_colour_current);
             vertices_visted[id_current][id_colour_current] = true;
 
+            // Finds and stores the next vertex to visit, based off the next shortest unvisited vertex.
             double current_shortest_distance = Double.POSITIVE_INFINITY;
             int id_colour_next = -1;
             for(int i = 0; i < shortest_distance_to_start.length; i ++ ) {
@@ -343,23 +394,23 @@ public class Graph {
                             current_shortest_distance = shortest_distance_to_start[i][j];
                             id_next_vertex = i;
                             id_colour_next = j;
-                            // System.out.println("i: " + i + " j: " + j);
                         }
                     }
                 }
             }
 
+            // Exits the loop if there are no more possible vertices to visit
             if(current_shortest_distance == Double.POSITIVE_INFINITY) {
                 break;
             }
             else {
                 id_current = id_next_vertex;
                 id_colour_current = id_colour_next;
-                // System.out.println("Next id: " + id_next_vertex);
             }
 
         }
 
+        // Finds and stores the shortest distance to the end vertex, along with the line used to reach it.
         double distance_final = Double.POSITIVE_INFINITY;
         int id_shortest_line = -1;
         for(int i = 0; i < shortest_distance_to_start[id_end].length; i ++ ) {
@@ -369,13 +420,12 @@ public class Graph {
             }
         }
 
-
-
         int[][] route = new int[1][2];
         route[0][0] = id_end;
         route[0][1] = vertex_previous[id_end][id_shortest_line][1];
         int id_line_next = id_shortest_line;
 
+        // Backtracks through the previous vertex array to form the shortest route from the end vertex to the start vertex.
         while(id_end != id_start) {
             
             int[][] route_new = new int[route.length + 1][2];
@@ -396,6 +446,7 @@ public class Graph {
 
         }
 
+        // Prints out the route and any changes, counting how many line changes happen.
         int line_current = route[0][1];
         int changes = 0;
         for(int i = 0; i < route.length; i ++ ) {
