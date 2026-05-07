@@ -10,15 +10,21 @@ public class Program {
     
     private Graph graph = new Graph();
     private String desired_start, desired_end;
+    private Metro_Window window_main = new Metro_Window();
+
 
     public Program() {
         
         data_handler(new File("Metrolink_times_linecolour.csv"));
-        // data_handler(new File("deansgate.csv"));
-        // data_handler(new File("test_times.csv"));
-        // graph.print_edges();
-        // graph.print_specific_edges("Deansgate/Castlefield", "St. Peter's Square");
-        get_user_input();
+        while(true) {
+            get_gui_input();
+            // System.out.println(desired_start + desired_end);
+            if(graph.find_vertex(desired_start) == true && graph.find_vertex(desired_start) == true) {
+                break;
+            }
+            
+        }
+        // get_commandline_input();
         graph.dijkstras(desired_start, desired_end);
 
     }
@@ -63,7 +69,7 @@ public class Program {
         }
     }
 
-    public void get_user_input() {
+    public void get_commandline_input() {
         Boolean input_gathered = false;
         Scanner input_scanner = new Scanner(System.in);
         while(input_gathered == false) {
@@ -87,10 +93,16 @@ public class Program {
         input_scanner.close();
     }
     
+    public void get_gui_input() {
+        String[] inputs = window_main.get_input();
+        desired_start = inputs[0];
+        desired_end = inputs[1];
+    }
 
     public static void main(String[] args) throws Exception {
         // System.setOut(new PrintStream(new FileOutputStream("results.txt")));
         Program new_program = new Program();
+
     }
 
 }

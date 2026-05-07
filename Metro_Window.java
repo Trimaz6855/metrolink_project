@@ -1,17 +1,24 @@
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.*;
 
-public class Metro_Window {
+public class Metro_Window implements ActionListener {
 
     private JFrame frame_main;
     private JPanel panel_main;
     private JTextArea text_start = new JTextArea();
     private JTextArea text_end = new JTextArea();
-    private JCheckBox check_least_changes = new JCheckBox("Least Changes Route");
-    private JCheckBox check_shortest = new JCheckBox("Shortest Route");
+    private ButtonGroup group_constraints = new ButtonGroup();
+    private JRadioButton check_least_changes = new JRadioButton("Least Changes Route");
+    private JRadioButton check_shortest = new JRadioButton("Shortest Route");
+    private JButton button_find_route = new JButton("Find Route");
+    private String[] inputs = new String[3];
 
 
     int height = 800;
@@ -68,14 +75,20 @@ public class Metro_Window {
         panel_constraints.setLayout(layout_constraints);
 
         check_shortest.setToolTipText("Shortest Route");
+        check_shortest.setActionCommand("Shortest");
+        check_shortest.setSelected(true);
+        group_constraints.add(check_shortest);
         panel_constraints.add(check_shortest);
+
         check_least_changes.setToolTipText("Least Changes Route");
+        check_least_changes.setActionCommand("Least");
+        group_constraints.add(check_least_changes);
         panel_constraints.add(check_least_changes);
         panel_input.add(panel_constraints);
 
-        JButton button_find_route = new JButton("Find Route");
         button_find_route.setToolTipText("Find Route");
         button_find_route.setFont(font_main);
+        button_find_route.addActionListener(this);
         panel_input.add(button_find_route);
 
         BoxLayout layout_main = new BoxLayout(panel_main, BoxLayout.Y_AXIS);
@@ -85,17 +98,21 @@ public class Metro_Window {
 
     }
 
-    public String[] get_station_inputs() {
-        String station_start =  text_start.getText();
-        String station_end = text_end.getText();
-        String[] inputs = new String[2];
-        inputs[0] = station_start;
-        inputs[1] = station_end;
-        return inputs;
+    public void actionPerformed(ActionEvent e) {
+
+        Object source = e.getSource();
+
+        if(source.equals(button_find_route)) {
+            System.out.println("Test");
+            inputs[0] = text_start.getText();
+            inputs[1] = text_end.getText();
+            inputs[2] = group_constraints.getSelection().getActionCommand();
+        }
+
     }
 
-    public static void main(String[] args) {
-        Metro_Window window = new Metro_Window();
+    public String[] get_input() {
+        return inputs;
     }
 
 }
