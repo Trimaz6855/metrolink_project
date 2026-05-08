@@ -27,7 +27,7 @@ javac *.java
 
 The program can be run using:
 ```
-java Program.java
+java Program
 ```
 
 An example usage of the program after the command is run is shown below:
