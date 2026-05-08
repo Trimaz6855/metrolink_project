@@ -489,16 +489,19 @@ public class Graph {
         else if(constraint.equals("Least")) {
             // Finds and stores the route with the least number of changes along with the line used to reach it.
             for(int i = 0; i < least_changes_to_start[id_end].length; i ++ ) {
+                System.out.println("Comparing " + least_changes_to_start[id_end][i] + " < " + changes_final);
                 if(least_changes_to_start[id_end][i] < changes_final && least_changes_to_start[id_end][i] > 0) {
                     changes_final = least_changes_to_start[id_end][i];
+                    distance_final = shortest_distance_to_start[id_end][i];
                     id_shortest_line = i;
                 }
             }
         }
     
-
         int[][] route = new int[1][2];
         route[0][0] = id_end;
+        System.out.println("id_end: " + id_end);
+        System.out.println("id_shortest_line: " + id_shortest_line);
         route[0][1] = vertex_previous[id_end][id_shortest_line][1];
         int id_line_next = id_shortest_line;
 
@@ -521,6 +524,13 @@ public class Graph {
 
             route = route_new;
 
+        }
+
+        if(constraint.equals("Shortest")) {
+            System.out.println("** Shortest Route **");
+        }
+        else if(constraint.equals("Least")) {
+            System.out.println("** Route with Fewest Changes **");
         }
 
         // Prints out the route and any changes, counting how many line changes happen.
