@@ -335,6 +335,7 @@ public class Graph {
         int id_next_vertex = -1;
         
         // If the least changes constraint is selected then the array storing the number of changes for each route is initialised as infinity.
+        // Would probably be better as an int, however logically using Double.POSITIVE_INFINITY works better.
         double[][] least_changes_to_start = new double[vertices.length][lines.length];
         if(constraint.equals("Least")) {
             for(int i = 0; i < vertices.length; i++ ) {
@@ -446,19 +447,55 @@ public class Graph {
                     id_colour_current = id_colour_next;
                 }
             }
-
+            else if(constraint.equals("Least")) {
+                // Finds and stores the next vertex to visit, based off the fewest number of changes up to that vertex.
+                double current_shortest_changes = Double.POSITIVE_INFINITY;
+                int id_colour_next = -1;
+                for(int i = 0; i < least_changes_to_start.length; i ++ ) {
+                    for(int j = 0; j < least_changes_to_start[i].length; j ++ ) {
+                        if(least_changes_to_start[i][j] < current_shortest_changes && vertices_visted[i][j] == false) {
+                            if(least_changes_to_start[i][j] > 0) {
+                                current_shortest_changes = least_changes_to_start[i][j];
+                                id_next_vertex = i;
+                                id_colour_next = j;
+                            }
+                        }
+                    }
+                }
+                // Exits the current loop if there are no more possible vertices to visit.
+                if(current_shortest_changes == Double.POSITIVE_INFINITY) {
+                    break;
+                }
+                else {
+                    id_current = id_next_vertex;
+                    id_colour_current = id_colour_next;
+                }
+            }
 
         }
 
-        // Finds and stores the shortest distance to the end vertex, along with the line used to reach it.
-        double distance_final = Double.POSITIVE_INFINITY;
         int id_shortest_line = -1;
-        for(int i = 0; i < shortest_distance_to_start[id_end].length; i ++ ) {
-            if(shortest_distance_to_start[id_end][i] < distance_final && shortest_distance_to_start[id_end][i] > 0) {
-                distance_final = shortest_distance_to_start[id_end][i];
-                id_shortest_line = i;
+        double distance_final = Double.POSITIVE_INFINITY;
+        double changes_final = Double.POSITIVE_INFINITY;
+        if(constraint.equals("Shortest")) {
+            // Finds and stores the shortest distance to the end vertex, along with the line used to reach it.
+            for(int i = 0; i < shortest_distance_to_start[id_end].length; i ++ ) {
+                if(shortest_distance_to_start[id_end][i] < distance_final && shortest_distance_to_start[id_end][i] > 0) {
+                    distance_final = shortest_distance_to_start[id_end][i];
+                    id_shortest_line = i;
+                }
             }
         }
+        else if(constraint.equals("Least")) {
+            // Finds and stores the route with the least number of changes along with the line used to reach it.
+            for(int i = 0; i < least_changes_to_start[id_end].length; i ++ ) {
+                if(least_changes_to_start[id_end][i] < changes_final && least_changes_to_start[id_end][i] > 0) {
+                    changes_final = least_changes_to_start[id_end][i];
+                    id_shortest_line = i;
+                }
+            }
+        }
+    
 
         int[][] route = new int[1][2];
         route[0][0] = id_end;
