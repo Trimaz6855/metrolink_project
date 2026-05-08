@@ -5,9 +5,6 @@
 Finds the optimal travel route between two stations on the Manchester Metrolink, based off of the conditions specified by the user:
 - Fastest route.
 - Fewest changes.
-- Delays.
-- Station closures.
-- Walking between stations.
 
 The program uses the assumption that changing between lines at stations takes exactly 2 minutes every time, this is a very general assumption and it would vary a lot in reality.
 
