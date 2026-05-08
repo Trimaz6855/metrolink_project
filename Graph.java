@@ -522,10 +522,10 @@ public class Graph {
         }
 
         if(constraint.equals("Shortest")) {
-            System.out.println("** Shortest Route **");
+            System.out.println("*** Shortest Route ***");
         }
         else if(constraint.equals("Least")) {
-            System.out.println("** Route with Fewest Changes **");
+            System.out.println("*** Route with Fewest Changes ***");
         }
 
         // Prints out the route and any changes, counting how many line changes happen.
