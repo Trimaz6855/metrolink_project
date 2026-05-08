@@ -67,6 +67,7 @@ public class Program {
         // Prevents the program trying to open a non-existent file.
         catch(FileNotFoundException e) {
             System.err.println("File not found.");
+            System.exit(0);
         }
     }
 
