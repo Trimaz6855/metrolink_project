@@ -10,7 +10,7 @@ import java.util.regex.*;
 public class Program {
     
     private Graph graph = new Graph();
-    private String desired_start, desired_end;
+    private String desired_start, desired_end, constraint;
 
     /**
       * The constructor for the main program which calls the data handler, gets the user input and then calls Dijkstra's. 
@@ -95,6 +95,18 @@ public class Program {
                 input_gathered = true;
             }
         }
+
+        input_gathered = false;
+        while(input_gathered == false) { 
+            System.out.println("Please Enter a Journey Constraint:");
+            System.out.println("(a) 'Shortest' for shortest path");
+            System.out.println("(b) 'Least' for the route with the least changes");
+            constraint = input_scanner.nextLine();
+            if(constraint.equals("Shortest") || constraint.equals("Least")) {
+                input_gathered = true;
+            }
+        }
+
         input_scanner.close();
     }
     
