@@ -296,7 +296,7 @@ public class Graph {
       * @param start String - the name of the start vertex.
       * @param end String - the name of the end vertex.
       **/
-    public void dijkstras(String start, String end) {
+    public void dijkstras(String start, String end, String constraint) {
 
         // Store the start and end vertex ids for ease of use.
         int id_start = get_vertex_id_from_name(start);
@@ -334,6 +334,21 @@ public class Graph {
         // Stores the id of the vertex with the next shortest distance to it.
         int id_next_vertex = -1;
         
+        // If the least changes constraint is selected then the array storing the number of changes for each route is initialised as infinity.
+        double[][] least_changes_to_start = new double[vertices.length][lines.length];
+        if(constraint.equals("Least")) {
+            for(int i = 0; i < vertices.length; i++ ) {
+                for(int j = 0; j < lines.length; j ++ ) {
+                    if(i == id_start) {
+                        least_changes_to_start[i][j] = 0;
+                    }
+                    else{
+                        least_changes_to_start[i][j] = Double.POSITIVE_INFINITY;
+                    }
+                }
+            }
+        }
+
         // Dijkstras pathfinding section.
         while(visited_all == false) {
             
@@ -351,30 +366,53 @@ public class Graph {
                             }
 
                             double weight_new = shortest_distance_to_start[id_current][id_colour_current] + edge_current.get_weight();
-
+                            
                             if(id_current == id_start) {
                                 line_changed = false;
                             }
-
+                            
                             else if(id_colour != id_colour_current) {
                                 line_changed = true;
                             }
                             
-                            
-                            if(line_changed == true) {
-                                weight_new += 2;
-                            }
-                            
-                            if(shortest_distance_to_start[i][id_colour] == Double.POSITIVE_INFINITY && weight_new < Double.POSITIVE_INFINITY) {
-                                shortest_distance_to_start[i][id_colour] = weight_new;
-                                vertex_previous[i][id_colour][0] = id_current;
-                                vertex_previous[i][id_colour][1] = id_colour_current;
-                            }
-                            else {
-                                if(weight_new <= shortest_distance_to_start[i][id_colour]) {
+                            if(constraint.equals("Shortest")) {
+                                if(line_changed == true) {
+                                    weight_new += 2;
+                                }
+                                if(shortest_distance_to_start[i][id_colour] == Double.POSITIVE_INFINITY && weight_new < Double.POSITIVE_INFINITY) {
                                     shortest_distance_to_start[i][id_colour] = weight_new;
                                     vertex_previous[i][id_colour][0] = id_current;
                                     vertex_previous[i][id_colour][1] = id_colour_current;
+                                }
+                                else {
+                                    if(weight_new <= shortest_distance_to_start[i][id_colour]) {
+                                        shortest_distance_to_start[i][id_colour] = weight_new;
+                                        vertex_previous[i][id_colour][0] = id_current;
+                                        vertex_previous[i][id_colour][1] = id_colour_current;
+                                    }
+                                }
+                            }
+                            else if(constraint.equals("Least")) {
+                                double weight_relative = least_changes_to_start[id_current][id_colour_current];
+                                if(line_changed == true) {
+                                    weight_relative += 1; 
+                                    weight_new += 2;
+                                }
+                                if(least_changes_to_start[i][id_colour] == Double.POSITIVE_INFINITY && shortest_distance_to_start[i][id_colour] == Double.POSITIVE_INFINITY) {
+                                    if(weight_relative < Double.POSITIVE_INFINITY && weight_new < Double.POSITIVE_INFINITY) {
+                                        least_changes_to_start[i][id_colour] = weight_relative;
+                                        shortest_distance_to_start[i][id_colour] = weight_new;
+                                        vertex_previous[i][id_colour][0] = id_current;
+                                        vertex_previous[i][id_colour][1] = id_colour_current;
+                                    }
+                                }
+                                else { 
+                                    if(weight_relative <= least_changes_to_start[i][id_colour]) {
+                                        least_changes_to_start[i][id_colour] = weight_relative;
+                                        shortest_distance_to_start[i][id_colour] = weight_new;
+                                        vertex_previous[i][id_colour][0] = id_current;
+                                        vertex_previous[i][id_colour][1] = id_colour_current;
+                                    }
                                 }
                             }
                         }
@@ -384,29 +422,31 @@ public class Graph {
 
             vertices_visted[id_current][id_colour_current] = true;
 
-            // Finds and stores the next vertex to visit, based off the next shortest unvisited vertex.
-            double current_shortest_distance = Double.POSITIVE_INFINITY;
-            int id_colour_next = -1;
-            for(int i = 0; i < shortest_distance_to_start.length; i ++ ) {
-                for(int j = 0; j < shortest_distance_to_start[i].length; j ++ ) {
-                    if(shortest_distance_to_start[i][j] < current_shortest_distance && vertices_visted[i][j] == false) {
-                        if(shortest_distance_to_start[i][j] > 0) {
-                            current_shortest_distance = shortest_distance_to_start[i][j];
-                            id_next_vertex = i;
-                            id_colour_next = j;
+            if(constraint.equals("Shortest")) {
+                // Finds and stores the next vertex to visit, based off the next shortest unvisited vertex.
+                double current_shortest_distance = Double.POSITIVE_INFINITY;
+                int id_colour_next = -1;
+                for(int i = 0; i < shortest_distance_to_start.length; i ++ ) {
+                    for(int j = 0; j < shortest_distance_to_start[i].length; j ++ ) {
+                        if(shortest_distance_to_start[i][j] < current_shortest_distance && vertices_visted[i][j] == false) {
+                            if(shortest_distance_to_start[i][j] > 0) {
+                                current_shortest_distance = shortest_distance_to_start[i][j];
+                                id_next_vertex = i;
+                                id_colour_next = j;
+                            }
                         }
                     }
                 }
+                // Exits the loop if there are no more possible vertices to visit
+                if(current_shortest_distance == Double.POSITIVE_INFINITY) {
+                    break;
+                }
+                else {
+                    id_current = id_next_vertex;
+                    id_colour_current = id_colour_next;
+                }
             }
 
-            // Exits the loop if there are no more possible vertices to visit
-            if(current_shortest_distance == Double.POSITIVE_INFINITY) {
-                break;
-            }
-            else {
-                id_current = id_next_vertex;
-                id_colour_current = id_colour_next;
-            }
 
         }
 
