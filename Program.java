@@ -91,7 +91,7 @@ public class Program {
             System.out.println("Enter Desired End Station: ");
             desired_end = input_scanner.nextLine();
             if(graph.find_vertex(desired_end) == true) {
-                System.out.println("Valid start and end station");
+                // System.out.println("Valid start and end station");
                 input_gathered = true;
             }
         }

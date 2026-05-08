@@ -11,6 +11,35 @@ Finds the optimal travel route between two stations on the Manchester Metrolink,
 
 The program uses the assumption that changing between lines at stations takes exactly 2 minutes every time, this is a very general assumption and it would vary a lot in reality.
 
+## Project Instructions
+
+Run the following command to clone the project repository:
+```
+git clone https://github.com/Trimaz6855/metrolink_project.git
+```
+
+Make sure you have a file named ```Metrolink_times_linecolours.csv``` in the same folder as the code files for the project.
+
+Compile the java files for the project using the following command:
+```
+javac *.java
+```
+
+The program can be run using:
+```
+java Program.java
+```
+
+An example usage of the program after the command is run is shown below:
+- The user enters Salford Quays as the station they are starting at.
+- The user entes Exchange Square as the station they are ending at.
+- The user enters Shortest to select the shortest route journey constraint.
+![Example usage of program](image.png)
+
+The available journey constraints are:
+- "Shortest", finds and prints the shortest possible route between the start and end stations.
+- "Least, finds and prints the route with the fewest changes between the start and end stations.
+
 ## Project Checklist
 
 ### Task 1
