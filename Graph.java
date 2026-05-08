@@ -408,7 +408,7 @@ public class Graph {
                                     }
                                 }
                                 else { 
-                                    if(weight_relative <= least_changes_to_start[i][id_colour]) {
+                                    if(weight_relative <= least_changes_to_start[i][id_colour] && weight_new <= shortest_distance_to_start[i][id_colour]) {
                                         least_changes_to_start[i][id_colour] = weight_relative;
                                         shortest_distance_to_start[i][id_colour] = weight_new;
                                         vertex_previous[i][id_colour][0] = id_current;
@@ -454,11 +454,9 @@ public class Graph {
                 for(int i = 0; i < least_changes_to_start.length; i ++ ) {
                     for(int j = 0; j < least_changes_to_start[i].length; j ++ ) {
                         if(least_changes_to_start[i][j] < current_shortest_changes && vertices_visted[i][j] == false) {
-                            if(least_changes_to_start[i][j] > 0) {
-                                current_shortest_changes = least_changes_to_start[i][j];
-                                id_next_vertex = i;
-                                id_colour_next = j;
-                            }
+                            current_shortest_changes = least_changes_to_start[i][j];
+                            id_next_vertex = i;
+                            id_colour_next = j;
                         }
                     }
                 }
@@ -490,7 +488,7 @@ public class Graph {
             // Finds and stores the route with the least number of changes along with the line used to reach it.
             for(int i = 0; i < least_changes_to_start[id_end].length; i ++ ) {
                 System.out.println("Comparing " + least_changes_to_start[id_end][i] + " < " + changes_final);
-                if(least_changes_to_start[id_end][i] < changes_final && least_changes_to_start[id_end][i] > 0) {
+                if(least_changes_to_start[id_end][i] < changes_final) {
                     changes_final = least_changes_to_start[id_end][i];
                     distance_final = shortest_distance_to_start[id_end][i];
                     id_shortest_line = i;
