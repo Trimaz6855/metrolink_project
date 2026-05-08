@@ -15,7 +15,7 @@ Run the following command to clone the project repository:
 git clone https://github.com/Trimaz6855/metrolink_project.git
 ```
 
-Make sure you have a file named ```Metrolink_times_linecolours.csv``` in the same folder as the code files for the project.
+Make sure you have a file named ```Metrolink_times_linecolour.csv``` in the same folder as the code files for the project.
 
 Compile the java files for the project using the following command:
 ```
